@@ -14,7 +14,7 @@ const Login = () => {
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div>
             <img
-              src="../src/assets/skillup-logo.png"
+              src="../assets/skillup-logo.png"
               className="w-64 mx-auto"
               alt="SkillUp Logo"
             />
