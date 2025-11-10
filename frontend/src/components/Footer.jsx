@@ -1,10 +1,8 @@
 import React,{useState} from "react";
-import PolicyModal from "./modals/LegalModal";
 
 const Footer = () => {
-  const [openModal, setOpenModal] = useState(null);
   return (
-    <footer className="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
+    <footer className="bg-amber-100  shadow-sm dark:bg-gray-800">
       <div className="w-full mx-auto max-w-7xl p-4 md:flex md:items-center md:justify-between">
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
           © {new Date().getFullYear()}{" "}
@@ -32,7 +30,7 @@ const Footer = () => {
           </li>
           <li>
             <a href="#" className="hover:underline me-4 md:me-6">
-              Licensing
+              Terms and Condition
             </a>
           </li>
           <li>

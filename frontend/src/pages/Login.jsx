@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import LegalModal from "../components/modals/LegalModal";
-import logo from '../assets/skillup-logo.png'
+import logo from "../assets/skillup-logo.png";
+import background from "../assets/background_2.jpg"
 
 const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -9,16 +10,16 @@ const Login = () => {
   const closeModal = () => setIsModalOpen(null);
 
   return (
-    <div className=" bg-gray-100 text-gray-900 flex justify-center my-[10%]">
+    <div style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+    }} className=" text-gray-900 flex justify-center h-screen ">
       <div className="max-w-7xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         {/* Left Section (Form) */}
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+        <div className="lg:w-1/2 xl:w-5/12 my-[12%] md:my-[15%] xsm:my-[30%]">
           <div>
-            <img
-              src={logo}
-              className="w-64 mx-auto"
-              alt="SkillUp Logo"
-            />
+            <img src={logo} className="w-64 mx-auto" alt="SkillUp Logo" />
           </div>
 
           <div className="mt-12 flex flex-col items-center">

@@ -25,7 +25,7 @@ const coursesSchema = new mongoose.Schema(
     lessons: [lessonSchema],
     category: {
       type: String,
-      enum: ["programming", "design", "marketing", "business", "other"],
+      enum:["frontend", "backend", "database", "programming", "design", "business", "marketing", "other"],
       default: "other",
     },
     isPublished: {

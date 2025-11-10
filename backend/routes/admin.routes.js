@@ -7,7 +7,6 @@ import {
 } from "../controllers/admin.controller.js";
 import express from "express";
 import { authenticate, allowAdmin } from "../middlewares/auth.middleware.js";
-import { get } from "mongoose";
 
 const router = express.Router();
 
@@ -15,7 +14,7 @@ const router = express.Router();
 router.get("/:adminId", authenticate, allowAdmin, getAdminById);
 
 // Admin routes for managing instructors
-router.get("/instructors", authenticate, allowAdmin, getAllInstructors);
+router.get("/instructors",getAllInstructors);
 router.delete(
   "/instructors/:instructorId",
   authenticate,

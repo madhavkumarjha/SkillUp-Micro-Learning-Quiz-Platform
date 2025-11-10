@@ -48,9 +48,11 @@ export const getAllInstructors = async (req, res) => {
     });
     res.status(200).json({ instructors: filteredInstructors });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+  console.error("Error in getAllStudents:", error);
+  res.status(500).json({ message: "Server error", error: error.message });
+}
 };
+
 
 // delete an instructor
 export const deleteInstructor = async (req, res) => {
