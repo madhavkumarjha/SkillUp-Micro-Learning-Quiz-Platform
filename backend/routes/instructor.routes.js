@@ -4,6 +4,7 @@ import {
   getInstructorById,
   getInstructorStudents,
   getInstructorCourses,
+  getAllInstructors,
 } from "../controllers/instructor.controller.js";
 
 import express from "express";
@@ -16,6 +17,7 @@ import {
 const router = express.Router();
 
 // Instructor routes
+router.get("/all",getAllInstructors);
 router.post("/create", authenticate, allowAdmin, createInstructor);
 router.patch("/:instructorId", authenticate, allowInstructor, updateInstructor);
 router.get("/:instructorId", authenticate, allowInstructor, getInstructorById);

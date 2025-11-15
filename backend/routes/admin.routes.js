@@ -1,7 +1,5 @@
 import {
-  getAllInstructors,
   deleteInstructor,
-  getAllStudents,
   deleteStudent,
   getAdminById,
 } from "../controllers/admin.controller.js";
@@ -14,7 +12,6 @@ const router = express.Router();
 router.get("/:adminId", authenticate, allowAdmin, getAdminById);
 
 // Admin routes for managing instructors
-router.get("/instructors",getAllInstructors);
 router.delete(
   "/instructors/:instructorId",
   authenticate,
@@ -23,7 +20,6 @@ router.delete(
 );
 
 // admin routes for managing students
-router.get("/students", authenticate, allowAdmin, getAllStudents);
 router.delete("/students/:studentId", authenticate, allowAdmin, deleteStudent);
 
 export default router;

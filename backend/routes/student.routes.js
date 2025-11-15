@@ -5,6 +5,7 @@ import {
   enrollStudentInCourse,
   getStudentCourses,
   updateStudent,
+  getAllStudents,
 } from "../controllers/student.controller.js";
 
 import express from "express";
@@ -13,6 +14,7 @@ import { authenticate, allowStudent } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 // Student routes for managing students
+router.get("/all",getAllStudents);
 router.post("/create", createStudent);
 router.post("/:studentId/enroll/:courseId", authenticate, allowStudent, enrollStudentInCourse);
 router.patch("/:studentId", authenticate, allowStudent, updateStudent);

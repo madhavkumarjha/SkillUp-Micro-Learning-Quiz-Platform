@@ -1,24 +1,36 @@
 import express from "express";
 import {
   authenticate,
-    allowInstructor,
+  allowInstructor,
 } from "../middlewares/auth.middleware.js";
 import {
-  createQuiz,
+  uploadQuizFromExcel,
   getQuizById,
   updateQuiz,
   deleteQuiz,
   getQuizzesByCourse,
-  getQuizzesByInstructor
+  getQuizzesByInstructor,
 } from "../controllers/quiz.controller.js";
+import { uploadExcel } from "../middlewares/uploadExcel.js";
 const router = express.Router();
 
 // Quiz routes
-router.post("/create", authenticate, allowInstructor, createQuiz);
+router.post(
+  "/upload",
+  authenticate,
+  allowInstructor,
+  uploadExcel.single("file"),
+  uploadQuizFromExcel
+);
 router.get("/:quizId", getQuizById);
 router.patch("/:quizId", authenticate, allowInstructor, updateQuiz);
 router.delete("/:quizId", authenticate, allowInstructor, deleteQuiz);
 router.get("/course/:courseId", getQuizzesByCourse);
-router.get("/instructor/me", authenticate, allowInstructor, getQuizzesByInstructor);
+router.get(
+  "/instructor/me",
+  authenticate,
+  allowInstructor,
+  getQuizzesByInstructor
+);
 
 export default router;

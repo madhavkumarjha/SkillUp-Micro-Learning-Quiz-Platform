@@ -6,15 +6,19 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
+      lowercase: true,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
       required: true,
+      select: false,
     },
     isAdmin: {
       type: Boolean,
@@ -26,43 +30,39 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin", "instructor"],
     },
     avatar: {
-      type: String,
-      default: "",
+      url:{type: String},
+      fileId: { type: String },
     },
-    phone:{
+    phone: {
       type: String,
-      default: "",
     },
-     // ✅ Instructor-specific fields
+    // ✅ Instructor-specific fields
     bio: { type: String },
-    expertise: [{ type: String }],
-    totalCourses: { type: Number, default: 0 },
-    ratings: { type: Number, default: 0 },
+    expertise: { type: [String], default: undefined },
+    totalCourses: { type: Number },
+    ratings: { type: Number },
 
-// ✅ Student-specific fields
-    enrolledCourses: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
-      },
-    ],
+    // ✅ Student-specific fields
+    enrolledCourses: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Course",
+      default: undefined,
+    },
+    completedLessons: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Lesson",
+      default: undefined,
+    },
 
-    completedLessons: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Lesson",
-      },
-    ],
-
-    quizScores: [
-      {
-        quiz: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Quiz",
+    quizScores: {
+      type: [
+        {
+          quiz: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz" },
+          score: Number,
         },
-        score: { type: Number },
-      },
-    ],
+      ],
+      default: undefined,
+    },
 
     // ✅ Password reset fields
     resetPasswordToken: String,

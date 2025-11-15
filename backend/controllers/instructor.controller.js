@@ -2,6 +2,24 @@ import { User } from "../models/user.models.js";
 import { Course } from "../models/course.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
 
+
+// get all instructors
+export const getAllInstructors = async (req, res) => {
+  try {
+    const instructors = await User.find({ role: "instructor" }).select(
+      "-password"
+    );
+    const filteredInstructors = instructors.map((instructor) => {
+      const safeInstructor = filterUserData(instructor);
+      return safeInstructor;
+    });
+    res.status(200).json({ instructors: filteredInstructors });
+  } catch (error) {
+  console.error("Error in getAllStudents:", error);
+  res.status(500).json({ error: error.message });
+}
+};
+
 // create a new instructor
 export const createInstructor = async (req, res) => {
   try {

@@ -4,6 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ role, isOpen, isClosed }) => {
   const location = useLocation();
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const handleMenuToggle = (menuName) => {
+    setOpenMenu(openMenu === menuName ? null : menuName);
+  };
 
   // Sidebar menu items per role
   const menuItems = {
@@ -12,9 +17,19 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
       { name: "My Courses", icon: Book, path: "/student/courses" },
       { name: "Quizzes", icon: ClipboardList, path: "/student/quizzes" },
     ],
+
     instructor: [
       { name: "Dashboard", icon: Home, path: "/instructor/dashboard" },
-      { name: "Courses", icon: Book, path: "/instructor/courses" },
+      {
+        name: "Courses",
+        icon: Book,
+        children: [
+          { name: "All Courses", path: "/instructor/courses" },
+          { name: "Create Course", path: "/instructor/course/create" },
+          { name: "Update Course", path: "/instructor/course/update" },
+          { name: "Delete Course", path: "/instructor/course/delete" },
+        ],
+      },
       {
         name: "Manage Quizzes",
         icon: ClipboardList,
@@ -49,6 +64,55 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
           {currentMenu.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
+
+            // If the menu has children (submenu)
+            if (item.children) {
+              const isExpanded = openMenu === item.name;
+
+              return (
+                <div key={item.name}>
+                  <button
+                    onClick={() => handleMenuToggle(item.name)}
+                    className={`flex items-center justify-between w-full px-4 py-2 rounded-md transition-all ${
+                      isExpanded
+                        ? "bg-blue-100 text-blue-600 dark:bg-blue-700 dark:text-white"
+                        : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <Icon size={18} />
+                      {item.name}
+                    </span>
+                    <span className="ml-auto">{isExpanded ? "▲" : "▼"}</span>
+                  </button>
+
+                  {/* Submenu items */}
+                  {isExpanded && (
+                    <div className="ml-6 mt-2 space-y-1">
+                      {item.children.map((child) => {
+                        const isChildActive = location.pathname === child.path;
+                        return (
+                          <Link
+                            key={child.name}
+                            to={child.path}
+                            onClick={isClosed}
+                            className={`block px-4 py-1 rounded-md text-sm transition-all ${
+                              isChildActive
+                                ? "bg-blue-50 text-blue-600 dark:bg-blue-800 dark:text-white"
+                                : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                            }`}
+                          >
+                            {child.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            // Normal single menu item
             return (
               <Link
                 key={item.name}
@@ -58,7 +122,7 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
                     ? "bg-blue-100 text-blue-600 dark:bg-blue-700 dark:text-white"
                     : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 }`}
-                onClick={isClosed} // auto close on mobile
+                onClick={isClosed}
               >
                 <Icon size={18} />
                 <span className="font-medium">{item.name}</span>

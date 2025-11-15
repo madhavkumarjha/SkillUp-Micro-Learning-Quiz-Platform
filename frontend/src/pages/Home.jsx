@@ -5,6 +5,7 @@ import OurTeam from "../components/OurTeam";
 import CourseCard from "../components/cards/CourseCard";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
+import FileUpload from "../components/FileUpload";
 
 function Home() {
   const [courses, setCourses] = useState([]);
@@ -91,7 +92,7 @@ function Home() {
           </button>
         </div>
       </section>
-
+          {/* <FileUpload/> */}
       <OurTeam />
       <section className="bg-gray-50 py-16">
         <h2 className="text-3xl font-poppins font-bold text-center mb-8">

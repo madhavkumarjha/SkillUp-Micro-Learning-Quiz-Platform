@@ -4,7 +4,7 @@ import { User } from "../models/user.models.js";
 // create a new Course
 export const createCourse = async (req, res) => {
   try {
-    const { title, description, category, thumbnail, lessons } = req.body;
+    const { title, description, category, thumbnailUrl, thumbnailFileId, lessons } = req.body;
     const instructorId = req.user.id;
     
     const instructor = await User.findById(instructorId);
@@ -16,7 +16,10 @@ export const createCourse = async (req, res) => {
       title,
       description,
       category,
-      thumbnail,
+      thumbnail: {
+        url: thumbnailUrl,
+        fileId: thumbnailFileId,
+      },
       lessons,
       instructor: instructorId,
     });

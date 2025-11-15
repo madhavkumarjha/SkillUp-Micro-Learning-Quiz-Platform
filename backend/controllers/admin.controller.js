@@ -36,22 +36,7 @@ export const updateAdminDetails = async (req, res) => {
   }
 };
 
-// get all instructors
-export const getAllInstructors = async (req, res) => {
-  try {
-    const instructors = await User.find({ role: "instructor" }).select(
-      "-password"
-    );
-    const filteredInstructors = instructors.map((instructor) => {
-      const safeInstructor = filterUserData(instructor);
-      return safeInstructor;
-    });
-    res.status(200).json({ instructors: filteredInstructors });
-  } catch (error) {
-  console.error("Error in getAllStudents:", error);
-  res.status(500).json({ message: "Server error", error: error.message });
-}
-};
+
 
 
 // delete an instructor
@@ -71,16 +56,7 @@ export const deleteInstructor = async (req, res) => {
   }
 };
 
-// Get all students
-export const getAllStudents = async (req, res) => {
-  try {
-    const students = await User.find({ role: "user" });
-    const filteredStudents = students.map((student) => filterUserData(student));
-    res.status(200).json({ students: filteredStudents });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
+
 
 // Delete a student
 export const deleteStudent = async (req, res) => {

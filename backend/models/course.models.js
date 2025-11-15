@@ -39,8 +39,8 @@ const coursesSchema = new mongoose.Schema(
       },
     ],
     thumbnail: {
-      type: String, // URL or file path
-      default: "",
+      url: { type: String },
+      fileId: { type: String },
     },
   },
   {

@@ -8,8 +8,10 @@ import studentRoutes from './routes/student.routes.js';
 import instructorRoutes from './routes/instructor.routes.js';
 import quizRoutes from './routes/quiz.routes.js';
 import courseRoutes from './routes/course.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
+import questionRoutes from './routes/quiz.routes.js'
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,9 @@ app.use('/api/student', studentRoutes);
 app.use('/api/instructor', instructorRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/course', courseRoutes);
+app.use("/api/file",uploadRoutes);
+app.use("/api/questions",questionRoutes);
+
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Connected to MongoDB');

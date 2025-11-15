@@ -19,11 +19,23 @@ export const createStudent = async (req, res) => {
   }
 };
 
+// Get all students
+export const getAllStudents = async (req, res) => {
+  try {
+    const students = await User.find({ role: "user" });
+    const filteredStudents = students.map((student) => filterUserData(student));
+    res.status(200).json({ students: filteredStudents });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 // Get student by ID
 export const getStudentById = async (req, res) => {
   try {
     const { studentId } = req.params;
-    const student = await User.findOne({ _id: studentId, role: "user" })
+    const student = await User.findOne({ _id: studentId, role: "user" }).populate("enrolledCourses")
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
