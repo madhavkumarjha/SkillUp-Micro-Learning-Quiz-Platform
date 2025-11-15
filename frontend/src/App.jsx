@@ -14,7 +14,7 @@ import Home from "./pages/Home.jsx";
 import PublicRoute from "./utils/publicRoute.jsx";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { restoreSession } from "./redux/features/auth/authSlice.js";
+import { finishInitialization, restoreSession } from "./redux/features/auth/authSlice.js";
 import CreateCourse from "./pages/instructor/course/CreateCourse.jsx";
 import UpdateCourse from "./pages/instructor/course/UpdateCourse.jsx";
 import Loader from "./components/Loader.jsx";

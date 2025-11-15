@@ -7,9 +7,7 @@ const authAPI = {
         return response.data;
     },
     register : async (data)=>{
-        const authRoute = data.role==="user" ? "/student/create":"/instructor/create" ;
-        
-        const response = await axiosInstance.post(authRoute,data);
+        const response = await axiosInstance.post("/student/create",data);
         return response.data;
     },
 };

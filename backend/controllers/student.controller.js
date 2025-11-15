@@ -1,5 +1,6 @@
 import { User } from "../models/user.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
+import { generateToken } from "../utils/generateToken.js";
 
 // Create a new student
 export const createStudent = async (req, res) => {
@@ -11,9 +12,10 @@ export const createStudent = async (req, res) => {
     }
     const newStudent = new User({ name, email, password, role: "user" });
     await newStudent.save();
+    const token = generateToken(newStudent);
     res
       .status(201)
-      .json({ message: "Student created successfully", student: newStudent });
+      .json({ message: "Student created successfully", user: newStudent,token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -30,17 +32,19 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
-
 // Get student by ID
 export const getStudentById = async (req, res) => {
   try {
     const { studentId } = req.params;
-    const student = await User.findOne({ _id: studentId, role: "user" }).populate("enrolledCourses")
+    const student = await User.findOne({
+      _id: studentId,
+      role: "user",
+    }).populate("enrolledCourses");
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
     const safeStudent = filterUserData(student);
-    res.status(200).json({ student:safeStudent });
+    res.status(200).json({ student: safeStudent });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -89,7 +93,6 @@ export const getStudentCourses = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 
 // enroll a student in a course
 export const enrollStudentInCourse = async (req, res) => {

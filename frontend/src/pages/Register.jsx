@@ -1,102 +1,193 @@
-import React, { useState } from "react";
-import { Mail, Lock, UserPlus2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Mail, Lock, UserPlus2, Eye, EyeOff, User } from "lucide-react";
 import LegalModal from "../components/modals/LegalModal";
 import logo from "../assets/skillup-logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../redux/features/auth/authSlice";
+import Loader from "../components/Loader";
 
 const Register = () => {
   const [isModalOpen, setIsModalOpen] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
-    name:"",
-    email:"",
-    password:"",
-    confirmPassword:"",
-    role:"user",
-  })
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "user",
+  });
 
-  const handleChange = ()=>{
-    
-  }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, user, token } = useSelector((state) => state.auth);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+
+
+  const passwordSeen = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (e) => {
+    try {
+      e.preventDefault();
+
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      dispatch(
+        registerUser({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        })
+      );
+    } catch (error) {
+      throw new Error({ error: error.message, message: "server error" });
+    }
+  };
+
   const closeModal = () => setIsModalOpen(null);
-  
 
-  const passwordSeen=()=>{
+  useEffect(() => {
+    if (token && user) {
+      // role-based redirect
+      switch (user.role) {
+        case "student":
+          navigate("/student");
+          break;
+        case "instructor":
+          navigate("/instructor");
+          break;
+        case "admin":
+          navigate("/admin");
+          break;
+        default:
+          navigate("/");
+      }
+    }
+  }, [token, user, navigate]);
 
-  }
-
+    if (loading) return <Loader />;
   return (
-    <div className=" bg-gray-100 text-gray-900 flex justify-center my-[10%]">
+    <div className="bg-gray-100 text-gray-900 flex justify-center my-[10%]">
       <div className="max-w-7xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-        {/* Left Section (Form) */}
+        {/* Left Section */}
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <div>
-            <img src={logo} className="w-64 mx-auto" alt="SkillUp Logo" />
-          </div>
+          <img src={logo} className="w-64 mx-auto" alt="SkillUp Logo" />
 
-          <div className="mt-12 flex flex-col items-center">
-            <h1 className="text-2xl xl:text-3xl font-extrabold">Sign Up</h1>
+          <h1 className="text-2xl xl:text-3xl font-extrabold text-center mt-8">
+            Sign Up
+          </h1>
 
-            <div className="w-full flex-1 mt-8">
-              {/* --- Email Form --- */}
-              <div className="mx-auto max-w-xs space-y-5">
-                <div className="relative">
-                  <Mail
-                    size={18}
-                    className="absolute left-3 top-3 text-gray-400"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  />
-                </div>
-
-                <div className="relative">
-                  <Lock
-                    size={18}
-                    className="absolute left-3 top-3 text-gray-400"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full pl-10 pr-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  />
-                </div>
-
-                <button className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  <UserPlus2 size={20} className="mr-2" />
-                  Sign Up
-                </button>
-
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  I agree to abide by SkillUp’s{" "}
-                  <span
-                    onClick={() => setIsModalOpen("terms")}
-                    className="border-b cursor-pointer border-gray-500 border-dotted"
-                  >
-                    Terms of Service
-                  </span>{" "}
-                  and{" "}
-                  <span
-                    onClick={() => setIsModalOpen("privacy")}
-                    className="border-b cursor-pointer border-gray-500 border-dotted"
-                  >
-                    Privacy Policy
-                  </span>
-                  .
-                </p>
-              </div>
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 mx-auto max-w-xs space-y-5"
+          >
+            {/* Name */}
+            <div className="relative">
+              <User size={18} className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
+              />
             </div>
-          </div>
+
+            {/* Email */}
+            <div className="relative">
+              <Mail size={18} className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full pl-10 pr-10 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
+              />
+              <span
+                className="absolute right-3 top-3 cursor-pointer"
+                onClick={passwordSeen}
+              >
+                {!showPassword ? (
+                  <EyeOff size={18} color="#99a1af" />
+                ) : (
+                  <Eye size={18} color="#99a1af" />
+                )}
+              </span>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative">
+              <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full pl-10 pr-10 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 text-sm focus:outline-none focus:border-gray-400"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="mt-5 tracking-wide font-semibold bg-indigo-500 text-white w-full py-3 rounded-lg flex items-center justify-center hover:bg-indigo-600 transition-all"
+            >
+              <UserPlus2 size={20} className="mr-2" />
+              Sign Up
+            </button>
+
+            {/* Terms */}
+            <p className="text-xs text-gray-600 text-center mt-4">
+              I agree to the{" "}
+              <span
+                className="border-b border-gray-500 cursor-pointer"
+                onClick={() => setIsModalOpen("terms")}
+              >
+                Terms of Service
+              </span>{" "}
+              and{" "}
+              <span
+                className="border-b border-gray-500 cursor-pointer"
+                onClick={() => setIsModalOpen("privacy")}
+              >
+                Privacy Policy
+              </span>
+              .
+            </p>
+          </form>
         </div>
-        {isModalOpen === "terms" && (
-          <LegalModal type="terms" onClose={closeModal} />
-        )}
 
-        {isModalOpen === "privacy" && (
-          <LegalModal onClose={closeModal} type="privacy" />
-        )}
-
-        {/* Right Side Image */}
+        {/* RIGHT IMAGE */}
         <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
           <div
             className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
@@ -107,6 +198,15 @@ const Register = () => {
           />
         </div>
       </div>
+
+      {/* LEGAL MODALS */}
+      {isModalOpen === "terms" && (
+        <LegalModal type="terms" onClose={closeModal} />
+      )}
+
+      {isModalOpen === "privacy" && (
+        <LegalModal type="privacy" onClose={closeModal} />
+      )}
     </div>
   );
 };

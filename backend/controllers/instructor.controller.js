@@ -1,7 +1,7 @@
 import { User } from "../models/user.models.js";
 import { Course } from "../models/course.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
-
+import { generateToken } from "../utils/generateToken.js";
 
 // get all instructors
 export const getAllInstructors = async (req, res) => {
@@ -15,9 +15,9 @@ export const getAllInstructors = async (req, res) => {
     });
     res.status(200).json({ instructors: filteredInstructors });
   } catch (error) {
-  console.error("Error in getAllStudents:", error);
-  res.status(500).json({ error: error.message });
-}
+    console.error("Error in getAllStudents:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 // create a new instructor
@@ -41,7 +41,8 @@ export const createInstructor = async (req, res) => {
     });
 
     await newInstructor.save();
-    res.status(201).json({ instructor: newInstructor });
+    const token = generateToken(newInstructor);
+    res.status(201).json({ user: newInstructor, token });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -51,7 +52,7 @@ export const createInstructor = async (req, res) => {
 export const updateInstructor = async (req, res) => {
   try {
     const { instructorId } = req.params;
-    const { name, email,bio,phone,expertise } = req.body;
+    const { name, email, bio, phone, expertise } = req.body;
     const instructor = await User.findOne({
       _id: instructorId,
       role: "instructor",
@@ -64,12 +65,12 @@ export const updateInstructor = async (req, res) => {
     if (bio) instructor.bio = bio;
     if (phone) instructor.phone = phone;
     if (expertise) instructor.expertise = expertise;
-    
+
     await instructor.save();
     const safeInstructor = filterUserData(instructor);
     res
       .status(200)
-      .json({ message: "Instructor updated successfully", safeInstructor});
+      .json({ message: "Instructor updated successfully", safeInstructor });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -131,7 +132,7 @@ export const getInstructorCourses = async (req, res) => {
       "instructor",
       "name email bio"
     );
-    res.status(200).json({ courses});
+    res.status(200).json({ courses });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
