@@ -9,24 +9,24 @@ import {
 } from "../controllers/student.controller.js";
 
 import express from "express";
-import { authenticate, allowStudent } from "../middlewares/auth.middleware.js";
+import { authenticate, allowStudent, allowAdmin } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 // Student routes for managing students
-router.get("/all",getAllStudents);
+router.get("/all",authenticate,allowAdmin,getAllStudents);
 router.post("/create", createStudent);
-router.post("/:studentId/enroll/:courseId", authenticate, allowStudent, enrollStudentInCourse);
+router.post("/enroll/:studentId/:courseId", authenticate, allowStudent, enrollStudentInCourse);
 router.patch("/:studentId", authenticate, allowStudent, updateStudent);
 router.get("/:studentId", authenticate, allowStudent, getStudentById);
 router.get(
-  "/:studentId/leaderboard",
+  "/leaderboard/:studentId",
   authenticate,
   allowStudent,
   getStudentLeaderboard
 );
 router.get(
-  "/:studentId/courses",
+  "/courses/:studentId",
   authenticate,
   allowStudent,
   getStudentCourses

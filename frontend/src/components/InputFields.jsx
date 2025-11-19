@@ -1,7 +1,7 @@
 // InputBox.js
 import React from "react";
 
-const InputBox = ({ label, type, name, value, onChange ,disabled}) => {
+const InputBox = ({ label, type, name, value, onChange}) => {
   return (
     <div className=" flex flex-col gap-1">
       <p className="text-white text-lg font-semibold font-Montserrat">
@@ -11,7 +11,6 @@ const InputBox = ({ label, type, name, value, onChange ,disabled}) => {
         type={type}
         value={value}
         name={name}
-        disabled={disabled}
         onChange={onChange}
         className="shadow-md rounded-lg px-4 py-2  focus:outline-none border-b border-white text-white font-semibold"
       />

@@ -1,5 +1,5 @@
 import React from "react";
-import InputBox from "./InputFields";
+import InputBox from '../InputFields'
 
 function CourseForm({ courseDetails, setCourseDetails }) {
   console.log(courseDetails);

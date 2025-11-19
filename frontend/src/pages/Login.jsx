@@ -18,8 +18,12 @@ const Login = () => {
   const { token, user, loading } = useSelector((state) => state.auth);
 
   const handleSubmit = (e)=>{
-    e.preventDefault();
-    dispatch(loginUser({email,password}));
+    try {
+      e.preventDefault();
+      dispatch(loginUser({email,password}));
+    } catch (error) {
+        throw new Error(error.message);
+    }
   }
 
   useEffect(() => {

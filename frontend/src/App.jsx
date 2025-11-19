@@ -14,16 +14,24 @@ import Home from "./pages/Home.jsx";
 import PublicRoute from "./utils/publicRoute.jsx";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { finishInitialization, restoreSession } from "./redux/features/auth/authSlice.js";
+import {
+  finishInitialization,
+  restoreSession,
+} from "./redux/features/auth/authSlice.js";
 import CreateCourse from "./pages/instructor/course/CreateCourse.jsx";
 import UpdateCourse from "./pages/instructor/course/UpdateCourse.jsx";
 import Loader from "./components/Loader.jsx";
+import CreateInstructor from "./pages/admin/instructor/CreateInstructor.jsx";
+import AllInstructors from "./pages/admin/instructor/AllInstructors.jsx";
+import UpdateInstructor from "./pages/instructor/UpdateInstructor.jsx";
+import AllStudents from "./pages/admin/students/AllStudents.jsx";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useDispatch();
-  const {initializing }= useSelector((state)=>state.auth)
+  const { initializing } = useSelector((state) => state.auth);
 
-useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
 
@@ -34,12 +42,13 @@ useEffect(() => {
     }
   }, []);
 
-  if(initializing){
-    return <Loader/>
+  if (initializing) {
+    return <Loader />;
   }
 
   return (
     <Router>
+      <Toaster/>
       <Routes>
         {/* Public Routes */}
         <Route
@@ -58,7 +67,14 @@ useEffect(() => {
             </PublicRoute>
           }
         />
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Home />
+            </PublicRoute>
+          }
+        />
 
         {/* Student Routes */}
         <Route
@@ -83,11 +99,9 @@ useEffect(() => {
           <Route index element={<InstructorDashboard />} />
           <Route path="course/create" element={<CreateCourse />} />
           <Route path="course/update/:id" element={<UpdateCourse />} />
-          
-          <Route path="course/update/:id"  element={<CreateCourse />} />
+
+          <Route path="course/update/:id" element={<CreateCourse />} />
         </Route>
-
-
 
         {/* Admin Routes */}
         <Route
@@ -99,6 +113,10 @@ useEffect(() => {
           }
         >
           <Route index element={<AdminDashboard />} />
+          <Route path="instructor/create" element={<CreateInstructor/>}/>
+          <Route path="instructors" element={<AllInstructors/>}/>
+          <Route path="instructor/update/:id" element={<UpdateInstructor/>}/>
+          <Route path="students" element={<AllStudents/>}/>
         </Route>
       </Routes>
     </Router>

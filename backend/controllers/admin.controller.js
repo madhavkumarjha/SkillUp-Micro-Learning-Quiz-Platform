@@ -37,8 +37,6 @@ export const updateAdminDetails = async (req, res) => {
 };
 
 
-
-
 // delete an instructor
 export const deleteInstructor = async (req, res) => {
   try {

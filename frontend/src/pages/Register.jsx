@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../redux/features/auth/authSlice";
 import Loader from "../components/Loader";
+import background from "../assets/background_2.jpg";
 
 const Register = () => {
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -77,10 +78,17 @@ const Register = () => {
 
     if (loading) return <Loader />;
   return (
-    <div className="bg-gray-100 text-gray-900 flex justify-center my-[10%]">
-      <div className="max-w-7xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+     <div
+          style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          className=" text-gray-900 flex justify-center h-screen "
+        >
+          <div className="max-w-7xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         {/* Left Section */}
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+        <div className="lg:w-1/2 xl:w-5/12 my-[12%] md:my-[15%] xsm:my-[30%]">
           <img src={logo} className="w-64 mx-auto" alt="SkillUp Logo" />
 
           <h1 className="text-2xl xl:text-3xl font-extrabold text-center mt-8">

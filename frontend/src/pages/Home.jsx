@@ -5,12 +5,14 @@ import OurTeam from "../components/OurTeam";
 import CourseCard from "../components/cards/CourseCard";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
-import FileUpload from "../components/FileUpload";
+import { useNavigate } from "react-router-dom";
+// import FileUpload from "../components/FileUpload";
 
 function Home() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const fetchCourses = async () => {
     try {
@@ -33,6 +35,10 @@ function Home() {
   if (loading) return <Loader />;
   if (error) return <p className="text-red-600">{error}</p>;
 
+  const handleNavigate =()=>{
+    navigate("/login");
+  }
+
   return (
     <div
       style={{
@@ -51,10 +57,10 @@ function Home() {
           Micro-courses & quizzes designed for quick, effective learning.
         </p>
         <div className="flex justify-center gap-4">
-          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
+          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700" onClick={handleNavigate}>
             Start Learning
           </button>
-          <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100">
+          <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100" onClick={handleNavigate}>
             Join for Free
           </button>
         </div>

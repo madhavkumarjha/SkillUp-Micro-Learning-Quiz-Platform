@@ -1,5 +1,5 @@
 import { useState } from "react"
-import CourseForm from "../../../components/course/CourseForm";
+import CourseForm from "../../../components/form/CourseForm";
 
 function CreateCourse() {
   const initalData={

@@ -16,10 +16,10 @@ const router = express.Router();
 
 // Course routes
 router.post("/create", authenticate, allowInstructor, createCourse);
-router.patch("/:courseId/publish", authenticate, allowInstructor, publishCourse);
+router.patch("/publish/:courseId", authenticate, allowInstructor, publishCourse);
 router.patch("/:courseId", authenticate, allowInstructor, updateCourse);
 router.get("/:courseId", getCourseById);
-router.get("/", getAllCourses);
+router.get("/all", getAllCourses);
 router.delete("/:courseId", authenticate, allowInstructor, deleteCourse);
 
 

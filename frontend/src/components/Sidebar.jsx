@@ -26,8 +26,6 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
         children: [
           { name: "All Courses", path: "/instructor/courses" },
           { name: "Create Course", path: "/instructor/course/create" },
-          { name: "Update Course", path: "/instructor/course/update" },
-          { name: "Delete Course", path: "/instructor/course/delete" },
         ],
       },
       {
@@ -38,9 +36,16 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
       { name: "Students", icon: Users, path: "/instructor/students" },
     ],
     admin: [
-      { name: "Dashboard", icon: Home, path: "/admin/dashboard" },
-      { name: "Users", icon: Users, path: "/admin/users" },
-      { name: "Reports", icon: ClipboardList, path: "/admin/reports" },
+      { name: "Dashboard", icon: Home, path: "/admin" },
+      { name: "Students", icon: Users, path: "/admin/students" },
+      {
+        name: "Instructors",
+        icon: ClipboardList,
+        children: [
+          { name: "All Instructors", path: "/admin/instructors" },
+          { name: "Create Instructor", path: "/admin/instructor/create" },
+        ],
+      },
     ],
   };
 

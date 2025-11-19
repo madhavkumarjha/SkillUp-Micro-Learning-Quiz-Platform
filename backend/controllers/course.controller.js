@@ -54,22 +54,18 @@ export const publishCourse = async (req, res) => {
 export const updateCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { title, description, category, thumbnail, lessons, isPublished } =
-      req.body;
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    if (title) course.title = title;
-    if (description) course.description = description;
-    if (category) course.category = category;
-    if (thumbnail) course.thumbnail = thumbnail;
-    if (lessons) course.lessons = lessons;
-    if (isPublished !== undefined) course.isPublished = isPublished;
+
+
+    Object.assign(course, req.body); // 🔥 Fast partial update
     await course.save();
+
     res.status(200).json({ message: "Course updated successfully", course });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
