@@ -4,12 +4,21 @@ import { User } from "../models/user.models.js";
 // create a new Course
 export const createCourse = async (req, res) => {
   try {
-    const { title, description, category, thumbnailUrl, thumbnailFileId, lessons } = req.body;
+    const {
+      title,
+      description,
+      category,
+      thumbnailUrl,
+      thumbnailFileId,
+      lessons,
+    } = req.body;
     const instructorId = req.user.id;
-    
+
     const instructor = await User.findById(instructorId);
     if (!instructor || instructor.role !== "instructor") {
-      return res.status(403).json({ message: "Only instructors can create courses" });
+      return res
+        .status(403)
+        .json({ message: "Only instructors can create courses" });
     }
 
     const newCourse = new Course({
@@ -46,7 +55,7 @@ export const publishCourse = async (req, res) => {
       .status(200)
       .json({ message: `Course ${isPublished ? "published" : "unpublished"}` });
   } catch (error) {
-    res.status(500).json({ message:error|| "Server error" });
+    res.status(500).json({ message: error || "Server error" });
   }
 };
 
@@ -58,7 +67,6 @@ export const updateCourse = async (req, res) => {
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-
 
     Object.assign(course, req.body); // 🔥 Fast partial update
     await course.save();
@@ -101,12 +109,17 @@ export const deleteCourse = async (req, res) => {
 };
 
 // get all Courses
-export const getAllCourses = async (req, res) => {
+export const getPublicCourses = async (req, res) => {
   try {
-    const courses = await Course.find().populate("instructor", "name email bio");
+    const courses = await Course.find({}).populate(
+      "instructor",
+      "name email bio"
+    );
+
     res.status(200).json({ courses });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.log("COURSE ERROR:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

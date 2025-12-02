@@ -7,7 +7,7 @@ import {
   createCourse,
   updateCourse,
   getCourseById,
-  getAllCourses,
+  getPublicCourses,
   deleteCourse,
   publishCourse,
 } from "../controllers/course.controller.js";
@@ -19,7 +19,7 @@ router.post("/create", authenticate, allowInstructor, createCourse);
 router.patch("/publish/:courseId", authenticate, allowInstructor, publishCourse);
 router.patch("/:courseId", authenticate, allowInstructor, updateCourse);
 router.get("/:courseId", getCourseById);
-router.get("/all", getAllCourses);
+router.get("/show", getPublicCourses);
 router.delete("/:courseId", authenticate, allowInstructor, deleteCourse);
 
 
