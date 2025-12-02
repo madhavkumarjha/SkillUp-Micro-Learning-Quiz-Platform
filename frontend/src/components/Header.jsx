@@ -2,7 +2,7 @@ import { LogOut, Menu, User } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect, use } from "react";
 
 function Header({ toggleSidebar }) {
   const { user } = useSelector((state) => state.auth);
@@ -16,8 +16,21 @@ function Header({ toggleSidebar }) {
   };
 
   const goToProfile = () => {
-    navigate("/user/profile");   // 🔹 CHANGE IF YOUR ROUTE IS DIFFERENT
+    setOpen(false);
+    navigate(`/${user.role}/user/profile`, { replace: true });
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.relative')) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };  
+  }, []);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm px-4 py-3 flex justify-between items-center">

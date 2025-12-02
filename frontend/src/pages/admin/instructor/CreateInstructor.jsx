@@ -67,7 +67,7 @@ function CreateInstructor() {
         type="submit"
         onClick={handleSubmit}
         disabled={isLoading}
-        className="bg-blue-500 px-4 py-2 rounded-md text-white font-semibold my-3 mx-[40%] "
+        className="bg-blue-500 px-4 py-2 rounded-md text-white font-semibold my-3 md:mx-[40%] mx-[30%]"
       >
         {isLoading ? "Creating..." : "Create Instructor"}
       </button>

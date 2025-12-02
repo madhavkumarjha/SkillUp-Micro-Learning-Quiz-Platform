@@ -2,14 +2,18 @@ import {
   deleteInstructor,
   deleteStudent,
   getAdminById,
+  // uploadAdminProfilePicture,
 } from "../controllers/admin.controller.js";
 import express from "express";
 import { authenticate, allowAdmin } from "../middlewares/auth.middleware.js";
+// import upload from "../utils/multer.js";
 
 const router = express.Router();
 
 // all admin route
 router.get("/:adminId", authenticate, allowAdmin, getAdminById);
+
+
 
 // Admin routes for managing instructors
 router.delete(

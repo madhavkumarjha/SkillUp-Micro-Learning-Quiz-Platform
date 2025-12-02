@@ -1,5 +1,6 @@
 import { User } from "../models/user.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
+import imagekit from "../utils/imageKit.js";
 
 // get admin by id
 export const getAdminById = async (req, res) => {
@@ -15,6 +16,8 @@ export const getAdminById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 // update admin details
 export const updateAdminDetails = async (req, res) => {
@@ -36,7 +39,6 @@ export const updateAdminDetails = async (req, res) => {
   }
 };
 
-
 // delete an instructor
 export const deleteInstructor = async (req, res) => {
   try {
@@ -53,8 +55,6 @@ export const deleteInstructor = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
 
 // Delete a student
 export const deleteStudent = async (req, res) => {

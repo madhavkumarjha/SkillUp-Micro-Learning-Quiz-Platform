@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Menu, X, Home, Book, Users, ClipboardList } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ role, isOpen, isClosed }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(null);
+  const sidebarRef = useRef(null);
 
   const handleMenuToggle = (menuName) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
   };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        isClosed(); // auto close sidebar
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   // Sidebar menu items per role
   const menuItems = {
@@ -55,6 +70,7 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
     <>
       {/* Sidebar container */}
       <aside
+      ref={sidebarRef}
         className={`fixed lg:static top-0 left-0 z-40 h-full lg:h-auto w-64 bg-white dark:bg-gray-800 shadow-sm transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out lg:translate-x-0`}

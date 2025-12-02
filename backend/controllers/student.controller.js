@@ -10,7 +10,7 @@ export const createStudent = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "Student already exists" });
     }
-    const newStudent = new User({ name, email, password, role: "user" });
+    const newStudent = new User({ name, email, password, role: "student" });
     await newStudent.save();
     const token = generateToken(newStudent);
     res
@@ -24,7 +24,7 @@ export const createStudent = async (req, res) => {
 // Get all students
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await User.find({ role: "user" });
+    const students = await User.find({ role: "student" });
     const filteredStudents = students.map((student) => filterUserData(student));
     res.status(200).json({ students: filteredStudents });
   } catch (error) {
@@ -38,7 +38,7 @@ export const getStudentById = async (req, res) => {
     const { studentId } = req.params;
     const student = await User.findOne({
       _id: studentId,
-      role: "user",
+      role: "student",
     }).populate("enrolledCourses");
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
@@ -55,7 +55,7 @@ export const updateStudent = async (req, res) => {
   try {
     const { studentId } = req.params;
     const { name, email, phone } = req.body;
-    const student = await User.findOne({ _id: studentId, role: "user" });
+    const student = await User.findOne({ _id: studentId, role: "student" });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -76,7 +76,7 @@ export const getStudentCourses = async (req, res) => {
 
     const student = await User.findOne({
       _id: studentId,
-      role: "user",
+      role: "student",
     })
       .populate({
         path: "enrolledCourses",
@@ -98,7 +98,7 @@ export const getStudentCourses = async (req, res) => {
 export const enrollStudentInCourse = async (req, res) => {
   try {
     const { studentId, courseId } = req.params;
-    const student = await User.findOne({ _id: studentId, role: "user" });
+    const student = await User.findOne({ _id: studentId, role: "student" });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -121,7 +121,7 @@ export const enrollStudentInCourse = async (req, res) => {
 export const completeLessonForStudent = async (req, res) => {
   try {
     const { studentId, lessonId } = req.params;
-    const student = await User.findOne({ _id: studentId, role: "user" });
+    const student = await User.findOne({ _id: studentId, role: "student" });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -145,7 +145,7 @@ export const recordQuizScoreForStudent = async (req, res) => {
   try {
     const { studentId, quizId } = req.params;
     const { score } = req.body;
-    const student = await User.findOne({ _id: studentId, role: "user" });
+    const student = await User.findOne({ _id: studentId, role: "student" });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -160,7 +160,7 @@ export const recordQuizScoreForStudent = async (req, res) => {
 // leaderboard of students based on quiz scores
 export const getStudentLeaderboard = async (req, res) => {
   try {
-    const students = await User.find({ role: "user" });
+    const students = await User.find({ role: "student" });
     const leaderboard = students.map((student) => {
       const totalScore = student.quizScores.reduce(
         (acc, curr) => acc + curr.score,

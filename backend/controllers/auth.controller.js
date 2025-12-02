@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 import { filterUserData } from "../utils/filteredUserData.js";
 import { generateToken } from "../utils/generateToken.js";
+import imagekit from "../utils/imageKit.js";
+import path from "path";
+import { log } from "console";
 
 // register new user
 export const registerUser = async (req, res) => {
@@ -42,11 +45,127 @@ export const loginUser = async (req, res) => {
     delete safeUser.password;
     res.status(200).json({ user: safeUser, token });
   } catch (error) {
-    res.status(500).json({ message: "Server error" ,error:error.message});
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+// user profile
+export const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    // console.log(userId);
 
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const safeUser = filterUserData(user);
+    res.status(200).json({ user: safeUser });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// update user profile
+export const updateUserDetails = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updates = req.body;
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      updates,
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const safeUser = filterUserData(user);
+    res.status(200).json({ User: safeUser });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// change user password
+export const changeUserPassword = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findById(userId).select("+password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!(await user.matchPassword(currentPassword))) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const uploadProfilePicture = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate new filename
+    const originalExt = path.extname(req.file.originalname);
+    const timestamp = new Date().toISOString().replace(/:/g, "-").split(".")[0];
+
+    const newFileName = `profile_${userId}_${timestamp}${originalExt}`;
+
+    const oldFileId = user?.avatar?.fileId || null;
+
+    // Upload to ImageKit
+    const uploadedImage = await imagekit.upload({
+      file: req.file.buffer.toString("base64"),
+      fileName: newFileName,
+      folder: "profile",
+    });
+
+    // Save in DB
+    user.avatar = {
+      url: uploadedImage.url,
+      fileId: uploadedImage.fileId,
+    };
+
+    await user.save();
+
+    // Delete old image from ImageKit
+    if (oldFileId) {
+      try {
+        await imagekit.deleteFile(oldFileId);
+      } catch (err) {
+        console.log("⚠ Failed to delete old file:", err.message);
+      }
+    }
+
+    const safeUser = filterUserData(user);
+
+    res.status(200).json({
+      success: true,
+      user: safeUser,
+      message: "Profile picture updated successfully",
+    });
+  } catch (error) {
+    console.log(error); // <-- add this to see actual error
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // forget password (to be implemented)
 export const forgetPassword = async (req, res) => {

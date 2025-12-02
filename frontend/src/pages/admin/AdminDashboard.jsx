@@ -1,6 +1,7 @@
 import AdminCard from "../../components/cards/adminCard";
 import { useGetAllInstructorsQuery } from "../../redux/features/api/instructor/instructorApi";
 import { useGetAllStudentsQuery } from "../../redux/features/api/student/studentApi";
+import Loader from "../../components/Loader";
 
 
 function AdminDashboard() {
@@ -19,7 +20,7 @@ function AdminDashboard() {
   } = useGetAllStudentsQuery();
 
   // Loading state
-  if (instructorLoading || studentLoading) return <p>Loading...</p>;
+  if (instructorLoading || studentLoading) return <Loader/>;
 
   // Error state
   if (instructorError || studentError)

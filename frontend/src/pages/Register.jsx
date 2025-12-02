@@ -17,7 +17,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "user",
+    role: "student",
   });
 
   const dispatch = useDispatch();

@@ -1,39 +1,24 @@
 import React, { useEffect, useState } from "react";
 import background from "../assets/background_2.jpg";
-import { getAllCourses } from "../utils/helper";
+// import { getAllCourses } from "../utils/helper";
 import OurTeam from "../components/OurTeam";
 import CourseCard from "../components/cards/CourseCard";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-// import FileUpload from "../components/FileUpload";
+import { useGetAllCoursesPublicQuery } from "../redux/features/api/publicApi";
 
 function Home() {
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const fetchCourses = async () => {
-    try {
-      setLoading(true);
-      const response = await getAllCourses();
-      //   console.log(response);
-      setCourses(response);
-    } catch (err) {
-      console.error("Error fetching courses:", err);
-      setError(err.message || "Failed to fetch courses");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const { data, isLoading, isError } = useGetAllCoursesPublicQuery(undefined, {
+    pollingInterval: 8000, // refresh every 8 sec
+  });
+ 
 
-  useEffect(() => {
-    fetchCourses();
-  }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (isLoading) return <Loader />;
+  if (isError) return <p className="text-red-600">{isError}</p>;
 
   const handleNavigate =()=>{
     navigate("/login");
@@ -77,7 +62,7 @@ function Home() {
         
       }}
         >
-          {courses?.map((course, index) => (
+          {data?.map((course, index) => (
             <CourseCard key={index} course={course} />
           ))}
         </div>

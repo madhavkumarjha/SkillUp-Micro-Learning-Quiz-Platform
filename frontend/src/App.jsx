@@ -26,6 +26,8 @@ import AllInstructors from "./pages/admin/instructor/AllInstructors.jsx";
 import UpdateInstructor from "./pages/instructor/UpdateInstructor.jsx";
 import AllStudents from "./pages/admin/students/AllStudents.jsx";
 import { Toaster } from "react-hot-toast";
+import UserProfile from "./pages/UserProfile.jsx";
+import UpdateProfile from "./pages/UpdateProfile.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ function App() {
 
   return (
     <Router>
-      <Toaster/>
+      <Toaster />
       <Routes>
         {/* Public Routes */}
         <Route
@@ -86,6 +88,8 @@ function App() {
           }
         >
           <Route index element={<StudentDashboard />} />
+          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="update/profile" element={<UpdateProfile />} />
         </Route>
 
         <Route
@@ -101,6 +105,8 @@ function App() {
           <Route path="course/update/:id" element={<UpdateCourse />} />
 
           <Route path="course/update/:id" element={<CreateCourse />} />
+          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="update/profile" element={<UpdateProfile />} />
         </Route>
 
         {/* Admin Routes */}
@@ -113,10 +119,12 @@ function App() {
           }
         >
           <Route index element={<AdminDashboard />} />
-          <Route path="instructor/create" element={<CreateInstructor/>}/>
-          <Route path="instructors" element={<AllInstructors/>}/>
-          <Route path="instructor/update/:id" element={<UpdateInstructor/>}/>
-          <Route path="students" element={<AllStudents/>}/>
+          <Route path="instructor/create" element={<CreateInstructor />} />
+          <Route path="instructors" element={<AllInstructors />} />
+          <Route path="instructor/update/:id" element={<UpdateInstructor />} />
+          <Route path="students" element={<AllStudents />} />
+          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="update/profile" element={<UpdateProfile />} />
         </Route>
       </Routes>
     </Router>

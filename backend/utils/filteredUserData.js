@@ -16,7 +16,7 @@ export const filterUserData = (user) => {
     delete safeUser.enrolledCourses;
     delete safeUser.quizScores;
     delete safeUser.completedLessons;
-    delete safeUser.avatar;
+    // delete safeUser.avatar;
     delete safeUser.phone;
     return safeUser; // full access
   }

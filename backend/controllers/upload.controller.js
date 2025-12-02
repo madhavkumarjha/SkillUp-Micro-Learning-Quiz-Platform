@@ -17,9 +17,9 @@ export const uploadImage = async (req,res)=>{
         }
 
         const result = await imagekit.upload({
-            file:req.file.buffer,
+            file:req.file.buffer.toString("base64"),
             fileName:req.file.originalname,
-            folder:"upload"
+            folder:"uploads"
         });
 
         res.status(201).json({
