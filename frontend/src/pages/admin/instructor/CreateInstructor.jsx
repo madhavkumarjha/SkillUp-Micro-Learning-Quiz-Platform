@@ -9,7 +9,7 @@ function CreateInstructor() {
     email: "",
     password: "",
     bio: "",
-    experties: [""],
+    expertise: [""],
     phone: "",
   };
   const [instructorData, setInstructorData] = useState(initialStructure);
@@ -20,26 +20,26 @@ function CreateInstructor() {
   const addExpertise = () => {
     setInstructorData((prev) => ({
       ...prev,
-      experties: [...prev.experties, ""],
+      expertise: [...prev.expertise, ""],
     }));
   };
 
   // Update expertise at a given index
   const updateExpertise = (index, value) => {
-    const updated = [...instructorData.experties];
+    const updated = [...instructorData.expertise];
     updated[index] = value;
     setInstructorData((prev) => ({
       ...prev,
-      experties: updated,
+      expertise: updated,
     }));
   };
 
   // Delete expertise at a given index
   const deleteExpertise = (index) => {
-    const updated = instructorData.experties.filter((_, i) => i !== index);
+    const updated = instructorData.expertise.filter((_, i) => i !== index);
     setInstructorData((prev) => ({
       ...prev,
-      experties: updated,
+      expertise: updated,
     }));
   };
 

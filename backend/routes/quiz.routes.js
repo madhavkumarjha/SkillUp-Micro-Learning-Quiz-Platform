@@ -10,6 +10,8 @@ import {
   deleteQuiz,
   getQuizzesByCourse,
   getQuizzesByInstructor,
+  getQuizzes,
+  updateQuizStatus
 } from "../controllers/quiz.controller.js";
 import { uploadExcel } from "../middlewares/uploadExcel.js";
 const router = express.Router();
@@ -22,7 +24,8 @@ router.post(
   uploadExcel.single("file"),
   uploadQuizFromExcel
 );
-router.get("/:quizId", getQuizById);
+router.get("/all", getQuizzes);
+router.get("/get/:quizId", getQuizById);
 router.patch("/:quizId", authenticate, allowInstructor, updateQuiz);
 router.delete("/:quizId", authenticate, allowInstructor, deleteQuiz);
 router.get("/course/:courseId", getQuizzesByCourse);
@@ -32,5 +35,6 @@ router.get(
   allowInstructor,
   getQuizzesByInstructor
 );
+router.patch("/status/:quizId",authenticate,allowInstructor,updateQuizStatus)
 
 export default router;

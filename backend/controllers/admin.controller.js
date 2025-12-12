@@ -1,6 +1,6 @@
 import { User } from "../models/user.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
-import imagekit from "../utils/imageKit.js";
+// import imagekit from "../utils/imageKit.js";
 
 // get admin by id
 export const getAdminById = async (req, res) => {
@@ -16,7 +16,6 @@ export const getAdminById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 
 // update admin details

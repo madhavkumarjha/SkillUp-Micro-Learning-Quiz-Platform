@@ -2,8 +2,8 @@ import {
   useGetAllStudentsQuery,
   useDeleteStudentMutation,
 } from "../../../redux/features/api/student/studentApi";
-import Loader from "../../../components/Loader";
-import TableFormat from "../../../components/TableFormat";
+import Loader from "../../../components/loader/Loader";
+import TableFormat from "../../../components/tables/UserTable";
 import toast from "react-hot-toast";
 
 function AllStudents() {
@@ -29,7 +29,7 @@ function AllStudents() {
 
   return (
     <div className="overflow-x-hidden ">
-      <h1 className="text-center text-2xl pb-4 font-semibold text-green-500">
+      <h1 className="text-2xl pb-4">
         All Students
       </h1>
       <TableFormat

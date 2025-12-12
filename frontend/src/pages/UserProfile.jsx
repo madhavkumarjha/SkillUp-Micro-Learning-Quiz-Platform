@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Edit } from "lucide-react";
+import { Edit, PhoneCall } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProfileModal from "../components/modals/ProfileModal";
@@ -8,14 +8,14 @@ import {
   useGetUserProfileQuery,
 } from "../redux/features/api/helperApi";
 import { toast } from "react-hot-toast";
-import Loader from "../components/Loader";
+import Loader from "../components/loader/Loader";
 
 function UserProfile() {
   const { user } = useSelector((state) => state.auth);
   const { data, isError, isLoading } = useGetUserProfileQuery(user._id);
 
   const [modalOpen, setModalOpen] = useState(false);
-  // console.log(data?.user);
+  console.log(data?.user);
   const navigation = useNavigate();
 
   const [updateProfilePic] = useUpdateProfilePicMutation();
@@ -68,12 +68,24 @@ function UserProfile() {
 
         {/* Content */}
         <div className="px-6 pb-6">
-          <h1 className="font-semibold text-4xl text-center mb-1 text-blue-600">
+          <h1 className="mb-1 text-2xl">
             {data?.user.name}
           </h1>
           <p className="text-gray-700 text-sm text-center italic">
             {data?.user.role}
           </p>
+          {
+            data?.user?.bio &&
+          <p className="text-gray-600 text-sm text-center">
+            {data?.user.bio}
+          </p>
+          }
+          {
+            data?.user?.phone &&
+          <p className="flex items-center justify-center text-gray-600 text-sm text-center">
+            <PhoneCall size={20}/> {data?.user.phone}
+          </p>
+          }
           {modalOpen && (
             <ProfileModal
               onClose={() => setModalOpen(false)}

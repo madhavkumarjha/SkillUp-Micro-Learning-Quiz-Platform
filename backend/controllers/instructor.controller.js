@@ -2,6 +2,7 @@ import { User } from "../models/user.models.js";
 import { Course } from "../models/course.models.js";
 import { filterUserData } from "../utils/filteredUserData.js";
 import { generateToken } from "../utils/generateToken.js";
+import { Quiz } from "../models/quiz.models.js";
 
 // get all instructors
 export const getAllInstructors = async (req, res) => {
@@ -110,6 +111,27 @@ export const getInstructorStudents = async (req, res) => {
       enrolledCourses: { $in: instructor._id },
     }).select("-password");
     res.status(200).json({ students });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getInstructorQuizzes = async (req, res) => {
+  try {
+    const { instructorId } = req.params;
+    const instructor = await User.findOne({
+      _id: instructorId,
+      role: "instructor",
+    });
+    if (!instructor) {
+      return res.status(404).json({ message: "Instructor not found" });
+    }
+    // fetch all quizzes created by this instructor
+    const quizzes = await Quiz.find({ instructor: instructorId }).populate(
+      "instructor",
+      "name email bio"
+    ).populate("course", "title description");
+    res.status(200).json({ quizzes });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

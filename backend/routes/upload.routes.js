@@ -7,6 +7,6 @@ const upload = multer({storage:multer.memoryStorage()});
 
 router.get("/auth",getAuthParams);
 
-router.post("/upload",upload.single("file"),uploadImage);
+router.post("/course",upload.single("file"),uploadImage);
 
 export default router;

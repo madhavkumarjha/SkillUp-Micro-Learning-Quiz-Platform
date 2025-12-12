@@ -1,7 +1,7 @@
 import AdminCard from "../../components/cards/adminCard";
 import { useGetAllInstructorsQuery } from "../../redux/features/api/instructor/instructorApi";
 import { useGetAllStudentsQuery } from "../../redux/features/api/student/studentApi";
-import Loader from "../../components/Loader";
+import Loader from "../../components/loader/Loader";
 
 
 function AdminDashboard() {

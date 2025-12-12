@@ -3,9 +3,9 @@ import {
   useGetAllInstructorsQuery,
   useDeleteInstructorMutation,
 } from "../../../redux/features/api/instructor/instructorApi";
-import Loader from "../../../components/Loader";
+import Loader from "../../../components/loader/Loader";
 import toast from "react-hot-toast";
-import TableFormat from "../../../components/TableFormat";
+import TableFormat from "../../../components/tables/UserTable";
 
 function AllInstructors() {
   const { data, isLoading, isError } = useGetAllInstructorsQuery();
@@ -32,7 +32,7 @@ function AllInstructors() {
 
   return (
     <div className="overflow-x-hidden ">
-      <h1 className="text-center text-2xl pb-4 font-semibold text-green-500">
+      <h1 className="text-2xl pb-4">
         All Instructors
       </h1>
       <TableFormat

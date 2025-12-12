@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Loader from "../components/Loader";
+import Loader from "../components/loader/Loader";
 
 const ProtectedRoute = ({ children, roles = [] }) => {
   const { user, isAuthenticated, initializing } = useSelector(
@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children, roles = [] }) => {
 
   if (initializing) return <Loader />;
 
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/" replace />;
   if (roles.length && !roles.includes(user.role))
     return <Navigate to="/" replace />;
 

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { get } from "mongoose";
 
 export const instructorApi = createApi({
   reducerPath: "instructorApi",
@@ -40,6 +41,11 @@ export const instructorApi = createApi({
       invalidatesTags: ["Instructor"],
     }),
 
+    getInstructorStudents: builder.query({
+      query: (id) => `/instructor/${id}/students`,
+    }),
+
+
     // deleteInstructor: builder.mutation({
     //   query: ({ id, ...rest }) => ({
     //     url: `/admin/instructors/${id}`,
@@ -64,4 +70,5 @@ export const {
   useCreateInstructorMutation,
   useUpdateInstructorMutation,
   useDeleteInstructorMutation,
+  useGetInstructorStudentsQuery,
 } = instructorApi;

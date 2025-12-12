@@ -10,6 +10,7 @@ export const filterUserData = (user) => {
   // Role-based filtering
   if (safeUser.role === "admin") {
     delete safeUser.expertise;
+    delete safeUser.specializations;
     delete safeUser.bio;
     delete safeUser.totalCourses;
     delete safeUser.ratings;
@@ -31,6 +32,7 @@ export const filterUserData = (user) => {
   if (safeUser.role === "user") {
     delete safeUser.expertise;
     delete safeUser.bio;
+    delete safeUser.specializations;
     delete safeUser.totalCourses;
     delete safeUser.ratings;
     return safeUser;

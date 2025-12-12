@@ -1,7 +1,8 @@
 import { useState } from "react";
 // import React,useState from "react";
 import { Trash2, SquarePen } from "lucide-react";
-import DeleteConfirmModal from "./modals/DeleteModal";
+import DeleteConfirmModal from "../modals/DeleteModal";
+
 
 function TableFormat({ header, data, isEdit, handleDelete,dataFields }) {
   const [modalOpen, setModalOpen] = useState(false);

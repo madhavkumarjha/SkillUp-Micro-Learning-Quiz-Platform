@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     email: {
       type: String,
       required: true,
@@ -29,8 +30,24 @@ const userSchema = new mongoose.Schema(
       default: "student",
       enum: ["student", "admin", "instructor"],
     },
+    specializations: {
+      type: [String],
+      enum: [
+        "frontend",
+        "backend",
+        "database",
+        "programming",
+        "design",
+        "business",
+        "marketing",
+        "data science",
+        "cloud",
+        "cybersecurity",
+        "other",
+      ],
+    },
     avatar: {
-      url:{type: String},
+      url: { type: String },
       fileId: { type: String },
     },
     phone: {
@@ -39,7 +56,7 @@ const userSchema = new mongoose.Schema(
     // ✅ Instructor-specific fields
     bio: { type: String },
     expertise: { type: [String], default: undefined },
-    totalCourses: { type: Number },
+    totalCoursesCreated: { type: Number },
     ratings: { type: Number },
 
     // ✅ Student-specific fields

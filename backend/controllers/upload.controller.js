@@ -11,7 +11,7 @@ export const getAuthParams = (req, res) => {
 
 export const uploadImage = async (req,res)=>{
     try {
-        
+        const {folderName} = req.body;
         if(!req.file){
             return res.status(400).json({ success: false, message: "No file uploaded" });
         }
@@ -19,7 +19,7 @@ export const uploadImage = async (req,res)=>{
         const result = await imagekit.upload({
             file:req.file.buffer.toString("base64"),
             fileName:req.file.originalname,
-            folder:"uploads"
+            folder:`/quizHub/courses/${folderName}`
         });
 
         res.status(201).json({

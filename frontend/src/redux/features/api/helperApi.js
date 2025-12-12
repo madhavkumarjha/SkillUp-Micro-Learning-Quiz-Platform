@@ -44,8 +44,17 @@ export const helperApi = createApi({
       }),
       invalidatesTags: ["Helper"],
     }),
+
+    uploadCourseMedia: builder.mutation({
+      query: (formData) => ({
+        url: "/upload/course",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Helper"],
+    }),
   }),
 });
 
-export const { useUpdateProfilePicMutation, useGetUserProfileQuery,useUpdateUserPasswordMutation,useUpdateUserProfileMutation } =
+export const { useUpdateProfilePicMutation, useGetUserProfileQuery,useUpdateUserPasswordMutation,useUpdateUserProfileMutation,useUploadCourseMediaMutation } =
   helperApi;

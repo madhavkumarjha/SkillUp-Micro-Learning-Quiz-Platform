@@ -1,9 +1,9 @@
 import React from 'react'
 
-function TeacherDashboard() {
+function InstructorDashboard() {
   return (
-    <div>TeacherDashboard</div>
+    <div>InstructorDashboard</div>
   )
 }
 
-export default TeacherDashboard
+export default InstructorDashboard

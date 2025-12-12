@@ -3,25 +3,49 @@ import background from "../assets/background_2.jpg";
 // import { getAllCourses } from "../utils/helper";
 import OurTeam from "../components/OurTeam";
 import CourseCard from "../components/cards/CourseCard";
-import Loader from "../components/Loader";
+import Loader from "../components/loader/Loader";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-import { useGetAllCoursesPublicQuery } from "../redux/features/api/publicApi";
+import {
+  useGetAllCoursesPublicQuery,
+  useGetAllInstructorsPublicQuery,
+} from "../redux/features/api/publicApi";
 
 function Home() {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(null)
 
- const { data, isLoading, isError } = useGetAllCoursesPublicQuery(undefined, {
-    pollingInterval: 8000, // refresh every 8 sec
+  const {
+    data: instructorData,
+    isLoading: instructorLoading,
+    isError: instructorError,
+  } = useGetAllInstructorsPublicQuery(undefined, {
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
- 
 
+  const {
+    data: courseData,
+    isLoading: courseLoading,
+    isError: courseError,
+  } = useGetAllCoursesPublicQuery(undefined, {
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
-  if (isLoading) return <Loader />;
-  if (isError) return <p className="text-red-600">{isError}</p>;
+  // Loading state
+  if (instructorLoading || courseLoading) return <Loader />;
 
-  const handleNavigate =()=>{
+  // Error state
+  if (instructorError || courseError)
+    return <p className="text-red-600 font-semibold">Something went wrong</p>;
+
+  const handleNavigate = () => {
     navigate("/login");
+  };
+  
+  function onnClose(){
+    setModalOpen(null);
   }
 
   return (
@@ -30,47 +54,50 @@ function Home() {
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-       
       }}
       className=" flex-col items-center justify-center"
     >
       <section className="text-center py-16 bg-linear-to-r from-indigo-50 to-indigo-100">
-        <h1 className="text-4xl font-poppins font-bold mb-4">
+        <h1 className="text-4xl mb-4 no-underline">
           Learn Fast. Test Smarter.
         </h1>
         <p className="text-lg font-roboto text-gray-600 mb-6">
           Micro-courses & quizzes designed for quick, effective learning.
         </p>
         <div className="flex justify-center gap-4">
-          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700" onClick={handleNavigate}>
+          <button
+            className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
+            onClick={handleNavigate}
+          >
             Start Learning
           </button>
-          <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100" onClick={handleNavigate}>
+          <button
+            className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100"
+            onClick={handleNavigate}
+          >
             Join for Free
           </button>
         </div>
       </section>
-      <section className="  bg-white" >
+      <section className="  bg-white">
         <h2 className="text-3xl font-poppins font-bold text-center py-6  underline">
           Top Courses
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-between gap-8 px-10 py-8 overflow-y-auto scroll-smooth"
-        style={{
-         backgroundImage: `url(${background})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        
-      }}
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-between gap-8 px-10 py-8 overflow-y-auto scroll-smooth"
+          style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
-          {data?.map((course, index) => (
+          {courseData?.courses?.map((course, index) => (
             <CourseCard key={index} course={course} />
           ))}
         </div>
       </section>
       <section className="text-center py-16 bg-linear-to-r from-indigo-50 to-indigo-100">
-        <h1 className="text-4xl font-poppins font-bold mb-4">
-          Learn Fast. Test Smarter.
-        </h1>
+        <h1 className="text-4xl mb-4">Learn Fast. Test Smarter.</h1>
         <p className="text-lg font-roboto text-gray-600 mb-6">
           Micro-courses & quizzes designed for quick, effective learning.
         </p>
@@ -83,8 +110,8 @@ function Home() {
           </button>
         </div>
       </section>
-          {/* <FileUpload/> */}
-      <OurTeam />
+      {/* <FileUpload/> */}
+      <OurTeam data={instructorData.instructors} />
       <section className="bg-gray-50 py-16">
         <h2 className="text-3xl font-poppins font-bold text-center mb-8">
           Why Choose SkillUp?
@@ -110,7 +137,7 @@ function Home() {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

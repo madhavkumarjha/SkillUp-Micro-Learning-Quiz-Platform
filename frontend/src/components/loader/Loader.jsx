@@ -1,6 +1,6 @@
 import React from 'react'
 import './loader.css'
-import logo from "../assets/skillup-logoicon.png"
+import logo from "../../assets/skillup-logoicon.png"
 
 function Loader() {
     

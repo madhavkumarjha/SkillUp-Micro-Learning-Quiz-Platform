@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 const lessonSchema = new mongoose.Schema({
   lesson_name: { type: String, required: true },
   content: { type: String },
-  resourse: { type: String, default: "" },
+  resourse: {
+    url: { type: String },
+    fileId: { type: String },
+  },
 });
 
 const coursesSchema = new mongoose.Schema(
@@ -32,6 +35,13 @@ const coursesSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    resourses: [
+      {
+        title: { type: String },
+        url: { type: String },
+        fileId: { type: String },
+      },
+    ],
     quizzes: [
       {
         type: mongoose.Schema.Types.ObjectId,

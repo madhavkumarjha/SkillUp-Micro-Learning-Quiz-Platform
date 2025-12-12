@@ -5,7 +5,7 @@ import logo from "../assets/skillup-logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../redux/features/auth/authSlice";
-import Loader from "../components/Loader";
+import Loader from "../components/loader/Loader";
 import background from "../assets/background_2.jpg";
 
 const Register = () => {
@@ -91,7 +91,7 @@ const Register = () => {
         <div className="lg:w-1/2 xl:w-5/12 my-[12%] md:my-[15%] xsm:my-[30%]">
           <img src={logo} className="w-64 mx-auto" alt="SkillUp Logo" />
 
-          <h1 className="text-2xl xl:text-3xl font-extrabold text-center mt-8">
+          <h1 className="text-2xl xl:text-3xl mt-8">
             Sign Up
           </h1>
 

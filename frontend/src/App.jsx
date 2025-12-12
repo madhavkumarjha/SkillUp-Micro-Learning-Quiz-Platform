@@ -20,7 +20,7 @@ import {
 } from "./redux/features/auth/authSlice.js";
 import CreateCourse from "./pages/instructor/course/CreateCourse.jsx";
 import UpdateCourse from "./pages/instructor/course/UpdateCourse.jsx";
-import Loader from "./components/Loader.jsx";
+import Loader from "./components/loader/Loader.jsx";
 import CreateInstructor from "./pages/admin/instructor/CreateInstructor.jsx";
 import AllInstructors from "./pages/admin/instructor/AllInstructors.jsx";
 import UpdateInstructor from "./pages/instructor/UpdateInstructor.jsx";
@@ -28,6 +28,12 @@ import AllStudents from "./pages/admin/students/AllStudents.jsx";
 import { Toaster } from "react-hot-toast";
 import UserProfile from "./pages/UserProfile.jsx";
 import UpdateProfile from "./pages/UpdateProfile.jsx";
+import AllCourses from "./pages/instructor/course/AllCourses.jsx";
+import InstructorStudents from "./pages/instructor/InstructorStudents.jsx";
+import UpdateQuiz from "./pages/instructor/quiz/UpdateQuiz.jsx";
+import CreateQuiz from "./pages/instructor/quiz/CreateQuiz.jsx";
+import AllQuizzes from "./pages/instructor/quiz/AllQuizzes.jsx";
+import ShowQuiz from "./pages/instructor/quiz/ShowQuiz.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -101,12 +107,18 @@ function App() {
           }
         >
           <Route index element={<InstructorDashboard />} />
+          <Route path="courses" element={<AllCourses />} />
           <Route path="course/create" element={<CreateCourse />} />
           <Route path="course/update/:id" element={<UpdateCourse />} />
+          <Route path="quiz/update/:id" element={<UpdateQuiz />} />
+          <Route path="quiz/show/:id" element={<ShowQuiz />} />
+          <Route path="quiz/create" element={<CreateQuiz />} />
+          <Route path="quizzes" element={<AllQuizzes />} />
+          
 
-          <Route path="course/update/:id" element={<CreateCourse />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="update/profile" element={<UpdateProfile />} />
+          <Route path="students" element={<InstructorStudents />} />
         </Route>
 
         {/* Admin Routes */}

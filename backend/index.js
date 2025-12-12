@@ -25,7 +25,7 @@ app.use('/api/student', studentRoutes);
 app.use('/api/instructor', instructorRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/course', courseRoutes);
-app.use("/api/file",uploadRoutes);
+app.use("/api/upload",uploadRoutes);
 app.use("/api/questions",questionRoutes);
 
 

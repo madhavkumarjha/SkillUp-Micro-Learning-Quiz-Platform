@@ -7,9 +7,11 @@ import {
   createCourse,
   updateCourse,
   getCourseById,
-  getPublicCourses,
+  getPublishedCourses,
   deleteCourse,
   publishCourse,
+  getAllCourses,
+
 } from "../controllers/course.controller.js";
 
 const router = express.Router();
@@ -18,8 +20,9 @@ const router = express.Router();
 router.post("/create", authenticate, allowInstructor, createCourse);
 router.patch("/publish/:courseId", authenticate, allowInstructor, publishCourse);
 router.patch("/:courseId", authenticate, allowInstructor, updateCourse);
-router.get("/:courseId", getCourseById);
-router.get("/show", getPublicCourses);
+router.get("/get/:courseId", getCourseById);
+router.get("/published", getPublishedCourses);
+router.get("/all",getAllCourses );
 router.delete("/:courseId", authenticate, allowInstructor, deleteCourse);
 
 

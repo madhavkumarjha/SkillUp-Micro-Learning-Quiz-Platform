@@ -5,6 +5,7 @@ import {
   getInstructorStudents,
   getInstructorCourses,
   getAllInstructors,
+  getInstructorQuizzes,
 } from "../controllers/instructor.controller.js";
 
 import express from "express";
@@ -27,6 +28,14 @@ router.get(
   allowInstructor,
   getInstructorStudents
 );
+
+router.get(
+  "/:instructorId/quizzes",
+  authenticate,
+  allowInstructor,
+  getInstructorQuizzes
+);
+
 router.get(
   "/:instructorId/courses",
   authenticate,

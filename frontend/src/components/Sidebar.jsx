@@ -34,7 +34,7 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
     ],
 
     instructor: [
-      { name: "Dashboard", icon: Home, path: "/instructor/dashboard" },
+      { name: "Dashboard", icon: Home, path: "/instructor" },
       {
         name: "Courses",
         icon: Book,
@@ -46,7 +46,11 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
       {
         name: "Manage Quizzes",
         icon: ClipboardList,
-        path: "/instructor/quizzes",
+          children: [
+          { name: "All Quizzes", path: "/instructor/quizzes" },
+          { name: "Create Quiz", path: "/instructor/quiz/create" },
+          ]
+
       },
       { name: "Students", icon: Users, path: "/instructor/students" },
     ],

@@ -42,7 +42,7 @@ function Header({ toggleSidebar }) {
         >
           <Menu size={22} />
         </button>
-        <h1 className="text-xl font-semibold text-blue-600">SkillUp</h1>
+        <h1 className="text-xl">SkillUp</h1>
       </div>
 
       {/* Right */}

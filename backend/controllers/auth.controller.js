@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 import { filterUserData } from "../utils/filteredUserData.js";
 import { generateToken } from "../utils/generateToken.js";
-import imagekit from "../utils/imageKit.js";
+import imagekit, { listProjectMediaGrouped } from "../utils/imageKit.js";
 import path from "path";
-import { log } from "console";
+// import { log } from "console";
 
 // register new user
 export const registerUser = async (req, res) => {
@@ -78,6 +78,7 @@ export const updateUserDetails = async (req, res) => {
       updates,
       { new: true }
     );
+    console.log(updates);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -124,9 +125,8 @@ export const uploadProfilePicture = async (req, res) => {
 
     // Generate new filename
     const originalExt = path.extname(req.file.originalname);
-    const timestamp = new Date().toISOString().replace(/:/g, "-").split(".")[0];
 
-    const newFileName = `profile_${userId}_${timestamp}${originalExt}`;
+    const newFileName = `profile_${userId}${originalExt}`;
 
     const oldFileId = user?.avatar?.fileId || null;
 
@@ -134,7 +134,7 @@ export const uploadProfilePicture = async (req, res) => {
     const uploadedImage = await imagekit.upload({
       file: req.file.buffer.toString("base64"),
       fileName: newFileName,
-      folder: "profile",
+      folder: "/skillUp/profile",
     });
 
     // Save in DB
@@ -224,5 +224,39 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.error("Reset password error:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// 
+export const getProjectMedia = async (req, res) => {
+  try {
+    const { folder } = req.params;
+    const groupedMedia = await listProjectMediaGrouped();
+    const folderMedia = groupedMedia.find(g => g.folder === folder);
+
+    if (!folderMedia) {
+      return res.status(404).json({ message: "Folder not found" });
+    }
+    res.status(200).json({ media: folderMedia.files });
+  } catch (error) {
+    console.error("Get project media error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getCourseMedia = async (req, res) => {
+  try {
+    const { courseName } = req.params;
+    const grouped = await listCoursesMediaGrouped();
+    const match = grouped.find(g => g.course === courseName);
+
+    if (!match) {
+      return res.status(404).json({ message: "Course folder not found" });
+    }
+
+    res.status(200).json({ media: match.files });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
