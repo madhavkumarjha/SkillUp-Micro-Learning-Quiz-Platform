@@ -6,12 +6,18 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await authAPI.login(userData);
-      return response;
+      localStorage.setItem("token", response.token);
+
+      // Immediately fetch user profile
+      const user = await thunkAPI.dispatch(fetchMe()).unwrap();
+
+      return { token: response.token, user };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
+
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
@@ -25,24 +31,32 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const fetchMe = createAsyncThunk("auth/me", async (_, thunkAPI) => {
+  try {
+    return await authAPI.me();
+  } catch (err) {
+    thunkAPI.dispatch(logout());
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
-    token: null,
+    token: localStorage.getItem("token"),
+    isAuthenticated: !!localStorage.getItem("token"),
     loading: false,
+    user: null,
     error: null,
-    isAuthenticated: false,
     initializing: true,
   },
   reducers: {
     logout: (state) => {
-      state.user = null;
       state.token = null;
+      state.user = null;
       state.isAuthenticated = false;
       state.initializing = false;
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
     },
     restoreSession: (state, action) => {
       state.user = action.payload.user;
@@ -64,16 +78,21 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
         localStorage.setItem("token", action.payload.token);
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         state.isAuthenticated = false;
+      })
+      .addCase(fetchMe.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.initializing = false;
+      })
+      .addCase(fetchMe.rejected, (state) => {
+        state.initializing = false;
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
@@ -82,11 +101,9 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
         localStorage.setItem("token", action.payload.token);
-        localStorage.setItem("user", JSON.stringify(action.payload.user)); // 👈 ADD THIS
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -96,5 +113,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, restoreSession,finishInitialization } = authSlice.actions;
+export const { logout, restoreSession, finishInitialization } =
+  authSlice.actions;
 export default authSlice.reducer;

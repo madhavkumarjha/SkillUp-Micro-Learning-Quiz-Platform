@@ -4,7 +4,7 @@ import { User } from "../models/user.models.js";
 // create a new Course
 export const createCourse = async (req, res) => {
   try {
-    const { title, description, category, thumbnail, lessons } = req.body;
+    const { title, description, category, thumbnail, chapters, } = req.body;
     const instructorId = req.user.id;
 
     const instructor = await User.findById(instructorId);
@@ -19,7 +19,7 @@ export const createCourse = async (req, res) => {
       description,
       category,
       thumbnail,
-      lessons,
+      chapters,
       instructor: instructorId,
     });
 
@@ -44,12 +44,12 @@ export const createCourse = async (req, res) => {
 export const publishCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { isPublished } = req.body;
+    const { deployed } = req.body;
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    course.isPublished = isPublished;
+    course.deployed = deployed;
     await course.save();
     res
       .status(200)

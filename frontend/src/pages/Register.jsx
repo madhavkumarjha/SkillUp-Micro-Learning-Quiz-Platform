@@ -22,7 +22,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, user, token } = useSelector((state) => state.auth);
+  const { loading, token,isAuthenticated } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,6 +33,15 @@ const Register = () => {
   const passwordSeen = () => {
     setShowPassword(!showPassword);
   };
+
+   const {
+    data: user,
+    isLoading,
+    isError,
+  } = useGetUserRoleQuery(undefined, {
+    skip: !isAuthenticated,
+  });
+
 
   const handleSubmit = (e) => {
     try {
@@ -76,7 +85,7 @@ const Register = () => {
     }
   }, [token, user, navigate]);
 
-    if (loading) return <Loader />;
+    if (loading || isLoading) return <Loader />;
   return (
      <div
           style={{

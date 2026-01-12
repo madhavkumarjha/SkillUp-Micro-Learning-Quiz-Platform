@@ -15,7 +15,7 @@ function CreateQuiz() {
   const { data, isLoading, isError } =
     useGetInstructorCoursesQuery(instructorId);
   const [createQuiz] = useCreateQuizMutation();
-  
+
   useEffect(() => {
     if (data?.courses) {
       const coursesList = data.courses.map((course) => ({
@@ -30,29 +30,28 @@ function CreateQuiz() {
   const handleFileSelect = (e) => {
     setSelectedFile(e.target.files[0]);
   };
-  
-const handleCreateQuiz = async (e) => {
-  e.preventDefault();
-  const courseId = e.target.course.value;
 
-  // Create fresh FormData each submit
-  const formData = new FormData();
-  formData.append("courseId", courseId);
-  formData.append("instructorId", instructorId);
-  if (selectedFile) {
-    formData.append("file", selectedFile);
-  }
+  const handleCreateQuiz = async (e) => {
+    e.preventDefault();
+    const courseId = e.target.course.value;
 
-  try {
-    await createQuiz(formData).unwrap();
-    toast.success("Quiz created successfully");
-    setSelectedFile(null); // ✅ correct reset
-  } catch (error) {
-    toast.error("Error creating quiz");
-    console.error(error);
-  }
-};
+    // Create fresh FormData each submit
+    const formData = new FormData();
+    formData.append("courseId", courseId);
+    formData.append("instructorId", instructorId);
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
 
+    try {
+      await createQuiz(formData).unwrap();
+      toast.success("Quiz created successfully");
+      setSelectedFile(null); // ✅ correct reset
+    } catch (error) {
+      toast.error("Error creating quiz");
+      console.error(error);
+    }
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -63,9 +62,7 @@ const handleCreateQuiz = async (e) => {
 
   return (
     <div className="">
-      <h1 className="text-2xl">
-        Create Quiz
-      </h1>
+      <h1 className="text-2xl">Create Quiz</h1>
       <form onSubmit={handleCreateQuiz}>
         <div className="mb-4">
           <label className="block mb-2 font-medium">Select Course</label>
@@ -74,7 +71,9 @@ const handleCreateQuiz = async (e) => {
             className="w-full p-2 border border-gray-300 rounded"
             required
           >
-            <option value="">-- Select a course --</option>
+            <option value="" disabled>
+              -- Select a course --
+            </option>
             {courses.map((course) => (
               <option key={course.id} value={course.id}>
                 {course.title}
@@ -87,24 +86,19 @@ const handleCreateQuiz = async (e) => {
             type="text"
             value={selectedFile ? selectedFile.name : ""}
             placeholder="Quiz file upload"
-            disabled
-            className="shadow-md rounded-lg px-4 py-2  focus:outline-none border-b text-gray-600 border-white  w-full"
+            readOnly
+            className="shadow-md rounded-lg px-4 py-2 focus:outline-none border-b text-gray-600 border-white w-full cursor-pointer"
+            onClick={() => document.getElementById("file-upload-quiz").click()}
           />
           <input
             type="file"
-            accept={".xlsx"||".xls"||".csv"}
+            accept=".xlsx,.xls,.csv"
             hidden
-            id={`file-upload-quiz`}
+            id="file-upload-quiz"
             onChange={handleFileSelect}
-            className="shadow-md cursor-pointer focus:outline-none rounded-md p-2 w-full"
           />
-          <label
-            htmlFor={`file-upload-quiz`}
-            className="cursor-pointer p-2 bg-gray-200 rounded-md hover:bg-gray-300"
-          >
-            <Upload className="cursor-pointer  " size={20} />
-          </label>
         </div>
+
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

@@ -43,7 +43,7 @@ export const createInstructor = async (req, res) => {
 
     await newInstructor.save();
     const token = generateToken(newInstructor);
-    res.status(201).json({ user: newInstructor, token });
+    res.status(201).json({ token });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

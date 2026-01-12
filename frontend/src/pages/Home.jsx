@@ -13,7 +13,6 @@ import {
 
 function Home() {
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(null)
 
   const {
     data: instructorData,
@@ -43,10 +42,9 @@ function Home() {
   const handleNavigate = () => {
     navigate("/login");
   };
-  
-  function onnClose(){
-    setModalOpen(null);
-  }
+  const handleQuizOpen = () => {
+    navigate("/startQuiz");
+  };
 
   return (
     <div
@@ -96,20 +94,23 @@ function Home() {
           ))}
         </div>
       </section>
-      <section className="text-center py-16 bg-linear-to-r from-indigo-50 to-indigo-100">
-        <h1 className="text-4xl mb-4">Learn Fast. Test Smarter.</h1>
-        <p className="text-lg font-roboto text-gray-600 mb-6">
-          Micro-courses & quizzes designed for quick, effective learning.
-        </p>
-        <div className="flex justify-center gap-4">
-          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
-            Start Learning
-          </button>
-          <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100">
-            Join for Free
+      <section className="text-center py-16 bg-linear-to-r from-indigo-50 to-indigo-100 flex justify-center">
+        <div className="bg-white shadow-lg rounded-xl p-10 text-center max-w-md">
+          <div className="mb-4">
+            <span className="text-5xl">📝</span>
+          </div>
+          <h1 className="md:text-3xl text-2xl font-extrabold text-indigo-600 mb-2">
+            Practice Quiz
+          </h1>
+          <p className="text-gray-600 mb-6">
+           Challenge yourself in minutes
+          </p>
+          <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition" onClick={handleQuizOpen}>
+            🚀 Start Quiz
           </button>
         </div>
       </section>
+
       {/* <FileUpload/> */}
       <OurTeam data={instructorData.instructors} />
       <section className="bg-gray-50 py-16">

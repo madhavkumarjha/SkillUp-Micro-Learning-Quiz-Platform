@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
     });
     await newUser.save();
     const token = generateToken(newUser);
-    res.status(201).json({ user: newUser, token });
+    res.status(201).json({ token, newUser });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -43,11 +43,16 @@ export const loginUser = async (req, res) => {
     const token = generateToken(user);
     const safeUser = filterUserData(user);
     delete safeUser.password;
-    res.status(200).json({ user: safeUser, token });
+    res.status(200).json({ token, user: safeUser });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getMe = async (req, res) => {
+  res.status(200).json(req.user);
+};
+
 
 // user profile
 export const getUserProfile = async (req, res) => {
@@ -60,7 +65,7 @@ export const getUserProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const safeUser = filterUserData(user);
-    res.status(200).json({ user: safeUser });
+    res.status(200).json({ message:"getdata"});
   } catch (error) {
     console.log(error);
 
@@ -82,8 +87,8 @@ export const updateUserDetails = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const safeUser = filterUserData(user);
-    res.status(200).json({ User: safeUser });
+    filterUserData(user);
+    res.status(200).json({success:true, message:"Profile updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

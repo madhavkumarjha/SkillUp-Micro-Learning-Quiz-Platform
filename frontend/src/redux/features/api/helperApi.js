@@ -1,18 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithAuth } from "../../../utils/baseQueryWithAuth";
+
 
 export const helperApi = createApi({
   reducerPath: "helperApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
 
   tagTypes: ["Helper"],
   endpoints: (builder) => ({
+    getUserRole: builder.query({
+      query: () => `/auth/me`,
+      providesTags: ["Helper"],
+    }),
     getUserProfile: builder.query({
       query: (id) => `/auth/profile/${id}`,
       providesTags: ["Helper"],
@@ -56,5 +55,5 @@ export const helperApi = createApi({
   }),
 });
 
-export const { useUpdateProfilePicMutation, useGetUserProfileQuery,useUpdateUserPasswordMutation,useUpdateUserProfileMutation,useUploadCourseMediaMutation } =
+export const { useUpdateProfilePicMutation, useGetUserProfileQuery,useUpdateUserPasswordMutation,useUpdateUserProfileMutation,useUploadCourseMediaMutation ,useGetUserRoleQuery } =
   helperApi;

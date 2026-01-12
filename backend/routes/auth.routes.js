@@ -9,6 +9,7 @@ import {
   changeUserPassword,
   updateUserDetails,
   getProjectMedia,
+  getMe,
 } from "../controllers/auth.controller.js";
 import { allowAdmin, authenticate } from "../middlewares/auth.middleware.js";
 import upload from "../utils/multer.js";
@@ -33,6 +34,7 @@ router.patch(
   updateUserDetails
 );
 
+router.get("/me", authenticate, getMe);
 router.get("/profile/:userId", authenticate, getUserProfile);
 router.post("/login", loginUser);
 router.post("/forgot-password", forgetPassword);

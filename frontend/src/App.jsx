@@ -14,10 +14,7 @@ import Home from "./pages/Home.jsx";
 import PublicRoute from "./utils/publicRoute.jsx";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import {
-  finishInitialization,
-  restoreSession,
-} from "./redux/features/auth/authSlice.js";
+import { fetchMe, finishInitialization, restoreSession } from "./redux/features/auth/authSlice.js";
 import CreateCourse from "./pages/instructor/course/CreateCourse.jsx";
 import UpdateCourse from "./pages/instructor/course/UpdateCourse.jsx";
 import Loader from "./components/loader/Loader.jsx";
@@ -34,21 +31,23 @@ import UpdateQuiz from "./pages/instructor/quiz/UpdateQuiz.jsx";
 import CreateQuiz from "./pages/instructor/quiz/CreateQuiz.jsx";
 import AllQuizzes from "./pages/instructor/quiz/AllQuizzes.jsx";
 import ShowQuiz from "./pages/instructor/quiz/ShowQuiz.jsx";
+import StartQuiz from "./pages/student/StartQuiz.jsx";
 
 function App() {
   const dispatch = useDispatch();
   const { initializing } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
+ useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    if (token && user) {
-      dispatch(restoreSession({ token, user: JSON.parse(user) }));
-    } else {
-      dispatch(finishInitialization());
-    }
-  }, []);
+  if (token) {
+    dispatch(restoreSession({ token }));
+    dispatch(fetchMe())
+  } else {
+    dispatch(finishInitialization());
+  }
+}, []);
+
 
   if (initializing) {
     return <Loader />;
@@ -76,6 +75,15 @@ function App() {
           }
         />
         <Route
+          path="/startQuiz"
+          element={
+            <PublicRoute>
+              <StartQuiz />
+            </PublicRoute>
+          }
+        />
+
+        <Route
           path="/"
           element={
             <PublicRoute>
@@ -94,6 +102,7 @@ function App() {
           }
         >
           <Route index element={<StudentDashboard />} />
+          <Route path="startQuiz" element={<StartQuiz />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="update/profile" element={<UpdateProfile />} />
         </Route>
@@ -114,7 +123,6 @@ function App() {
           <Route path="quiz/show/:id" element={<ShowQuiz />} />
           <Route path="quiz/create" element={<CreateQuiz />} />
           <Route path="quizzes" element={<AllQuizzes />} />
-          
 
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="update/profile" element={<UpdateProfile />} />

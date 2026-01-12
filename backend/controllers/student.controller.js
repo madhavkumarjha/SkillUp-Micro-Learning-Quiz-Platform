@@ -15,7 +15,7 @@ export const createStudent = async (req, res) => {
     const token = generateToken(newStudent);
     res
       .status(201)
-      .json({ message: "Student created successfully", user: newStudent,token });
+      .json({ token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

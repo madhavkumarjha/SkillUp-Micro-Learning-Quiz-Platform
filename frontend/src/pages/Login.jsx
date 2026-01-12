@@ -5,8 +5,9 @@ import { loginUser } from "../redux/features/auth/authSlice";
 import LegalModal from "../components/modals/LegalModal";
 import logo from "../assets/skillup-logo.png";
 import background from "../assets/background_2.jpg";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+// import Loader from "../components/loader/Loader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,23 +16,17 @@ const Login = () => {
 
   const closeModal = () => setIsModalOpen(null);
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const { token, user, loading } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
-      toast.success("Logged in successfully");
-    } catch (error) {
-      toast.error(error?.message || "Login failed");
-    }
-  };
+      const res = await dispatch(loginUser({ email, password })).unwrap();
 
-  useEffect(() => {
-    if (token && user) {
-      // role-based redirect
-      switch (user.role) {
+      toast.success("Logged in successfully");
+
+      switch (res.user.role) {
         case "student":
           navigate("/student");
           break;
@@ -44,8 +39,10 @@ const Login = () => {
         default:
           navigate("/");
       }
+    } catch (error) {
+      toast.error(error?.message || "Login failed");
     }
-  }, [token, user, navigate]);
+  };
 
   return (
     <div

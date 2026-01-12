@@ -12,7 +12,7 @@ import Loader from "../components/loader/Loader";
 
 function UserProfile() {
   const { user } = useSelector((state) => state.auth);
-  const { data, isError, isLoading } = useGetUserProfileQuery(user._id);
+  const { data, isError, isLoading } = useGetUserProfileQuery(user.id);
 
   const [modalOpen, setModalOpen] = useState(false);
   console.log(data?.user);
@@ -71,12 +71,12 @@ function UserProfile() {
           <h1 className="mb-1 text-2xl">
             {data?.user.name}
           </h1>
-          <p className="text-gray-700 text-sm text-center italic">
-            {data?.user.role}
+          <p className="capitalize text-gray-700 text-sm text-center italic">
+            {data?.user.role==="instructor" ? data?.user.specializations : data?.user.role}
           </p>
           {
             data?.user?.bio &&
-          <p className="text-gray-600 text-sm text-center">
+          <p className="text-gray-600 text-sm text-justify py-3">
             {data?.user.bio}
           </p>
           }

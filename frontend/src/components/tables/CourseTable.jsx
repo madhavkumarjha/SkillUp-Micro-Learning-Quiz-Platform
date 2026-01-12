@@ -14,16 +14,18 @@ function CourseTable({ header, data }) {
     navigate(`/instructor/course/update/${item._id}`);
   };
 
-    const [deleteCourse] = useDeleteCourseMutation();
-  
-    const handleDelete = async (id) => {
-      try {
-        await deleteCourse({ id }).unwrap();
-        toast.success("Course deleted successfully");
-      } catch (error) {
-        toast.error("Failed to delete course:", error);
-      }
-    };
+  const [deleteCourse] = useDeleteCourseMutation();
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteCourse({ id }).unwrap();
+      toast.success("Course deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete course:", error);
+    }
+  };
+
+
 
   return (
     <div className="overflow-x-auto">
@@ -48,11 +50,17 @@ function CourseTable({ header, data }) {
             >
               <td className="py-3 px-4 border-b">{item.title}</td>
               <td className="py-3 px-4 border-b">{item?.instructor?.name}</td>
+  
               <td className="py-3 px-4 border-b capitalize">{item.category}</td>
-              <td className="py-3 px-4 border-b">{item.isPublished.toString()}</td>
+              <td className="py-3 px-4 border-b">
+                {item.isPublished.toString()}
+              </td>
               <td className="py-3 px-4 border-b ">
                 <div className="flex gap-2 items-center justify-between">
-                  <button className="text-green-500 hover:text-green-700" onClick={() => handleEditClick(item)}>
+                  <button
+                    className="text-green-500 hover:text-green-700"
+                    onClick={() => handleEditClick(item)}
+                  >
                     <SquarePen />
                   </button>
                   <button
