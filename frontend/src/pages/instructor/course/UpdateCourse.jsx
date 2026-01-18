@@ -20,7 +20,19 @@ function UpdateCourse() {
     description: "",
     category: "",
     thumbnail: { url: "", fileId: "" },
-    lessons: [{ lesson_name: "", content: "" }],
+    chapters: [
+      {
+        title: "",
+        summary: "",
+        lessons: [
+          {
+            lesson_name: "",
+            content: "",
+            resources: [{ title: "", url: "", fileId: "" }],
+          },
+        ],
+      },
+    ],
   };
 
   const [courseDetails, setCourseDetails] = useState(initialData);
@@ -39,14 +51,12 @@ function UpdateCourse() {
         id: courseDetails?._id,
         ...courseDetails,
       }).unwrap();
-      const response = await res.data; // parse JSON
 
-      if (response.success) {
+      if (res.success) {
         toast.success("Course updated successfully");
       } else {
         // Handle non-2xx responses
-        const errorData = await response.json().catch(() => ({}));
-        toast.error(errorData.message || "Error updating course");
+        toast.error(res.message || "Error updating course");
       }
     } catch (error) {
       toast.error("Server unreachable or network error");

@@ -79,7 +79,7 @@ const Sidebar = ({ role, isOpen, isClosed }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out lg:translate-x-0`}
       >
-        <nav className="p-4 space-y-2">
+        <nav className="p-4 space-y-2 md:mt-16">
           <button
             className="lg:hidden text-gray-600 dark:text-gray-200 z-30"
             onClick={isClosed}

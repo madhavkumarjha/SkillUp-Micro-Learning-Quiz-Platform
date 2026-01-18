@@ -1,6 +1,6 @@
 import { useState } from "react";
 // import React,useState from "react";
-import { Trash2, SquarePen } from "lucide-react";
+import { Trash2, SquarePen, View, Upload } from "lucide-react";
 import DeleteConfirmModal from "../modals/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import { useDeleteCourseMutation } from "../../redux/features/api/course/courseApi";
@@ -25,11 +25,9 @@ function CourseTable({ header, data }) {
     }
   };
 
-
-
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden">
+      <table className="min-w-full bg-white border border-gray-200 shadow-lg rounded-lg overflow-hidden mt-4">
         <thead className="bg-gray-200 text-gray-700">
           <tr>
             {header.map((head, key) => (
@@ -46,17 +44,29 @@ function CourseTable({ header, data }) {
           {data.map((item, index) => (
             <tr
               key={"i" + index}
-              className="hover:bg-green-50 transition duration-150"
+              className="hover:bg-green-50 transition duration-150 overflow-x-auto scroll-smooth"
             >
               <td className="py-3 px-4 border-b">{item.title}</td>
-              <td className="py-3 px-4 border-b">{item?.instructor?.name}</td>
-  
               <td className="py-3 px-4 border-b capitalize">{item.category}</td>
+              <td className="py-3 px-4 border-b">{item?.status}</td>
               <td className="py-3 px-4 border-b">
-                {item.isPublished.toString()}
+                <div className="flex gap-2 items-center ">
+                  <button
+                    className="text-blue-500 hover:text-blue-700"
+                    onClick={() => handleEditClick(item)}
+                  >
+                    <View />
+                  </button>
+                  <button
+                    className="text-red-500 hover:text-red-700"
+                    onClick={() => setModalOpen(true)}
+                  >
+                    <Upload />
+                  </button>
+                </div>
               </td>
               <td className="py-3 px-4 border-b ">
-                <div className="flex gap-2 items-center justify-between">
+                <div className="flex gap-4 items-center ">
                   <button
                     className="text-green-500 hover:text-green-700"
                     onClick={() => handleEditClick(item)}

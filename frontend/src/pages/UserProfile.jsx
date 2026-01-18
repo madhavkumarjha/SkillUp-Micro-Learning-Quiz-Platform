@@ -12,7 +12,7 @@ import Loader from "../components/loader/Loader";
 
 function UserProfile() {
   const { user } = useSelector((state) => state.auth);
-  const { data, isError, isLoading } = useGetUserProfileQuery(user.id);
+  const { data, isError, isLoading } = useGetUserProfileQuery(user._id);
 
   const [modalOpen, setModalOpen] = useState(false);
   console.log(data?.user);

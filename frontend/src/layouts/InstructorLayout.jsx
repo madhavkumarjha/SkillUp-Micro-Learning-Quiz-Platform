@@ -6,25 +6,32 @@ import Footer from "../components/Footer";
 
 function InstructorLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-      <Header toggleSidebar={toggleSidebar} />
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 ">
+      <header className="w-full bg-white dark:bg-gray-900 z-50 fixed top-0 left-0">
+        <Header toggleSidebar={toggleSidebar} />
+      </header>
 
-      <div className="flex-1 flex">
-        <Sidebar
-          isOpen={isSidebarOpen}
-          isClosed={() => setIsSidebarOpen(false)}
-          role="instructor"
-        />
-        <main className="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-1 ">
+        {/* Sidebar */}
+        <aside className="lg:w-64 shrink-0 lg:fixed lg:overflow-hidden bg-white dark:bg-gray-800">
+          <Sidebar
+            isOpen={isSidebarOpen}
+            isClosed={() => setIsSidebarOpen(false)}
+            role="instructor"
+          />
+        </aside>
+        <main className="lg:ml-64 flex-1 md:mb-15 mt-15 py-6 bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
           {/* 👇 This is where nested routes render */}
           <Outlet />
         </main>
       </div>
 
-      <Footer />
+      <footer className="w-full bg-yellow-100 text-sm z-40 md:fixed md:bottom-0 md:left-0">
+        <Footer />
+      </footer>
     </div>
   );
 }

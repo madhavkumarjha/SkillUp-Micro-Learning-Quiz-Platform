@@ -91,8 +91,13 @@ function QuizTable({ header, data }) {
                   }}
                   className="border rounded px-2 py-1"
                 >
-                  <option value="published">Publish</option>
-                  <option value="draft">Draft</option>
+                  {
+                    ["draft", "published", "archived", "inactive"].map((statusOption) => (
+                      <option key={statusOption} value={statusOption}>
+                        {statusOption.charAt(0).toUpperCase() + statusOption.slice(1)}
+                      </option>
+                    ))
+                  }
                 </select>
               </td>
               <td className="py-3 px-4 border-b ">

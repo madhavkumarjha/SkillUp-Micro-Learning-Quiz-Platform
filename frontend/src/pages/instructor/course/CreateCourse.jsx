@@ -12,10 +12,17 @@ function CreateCourse() {
       url: "",
       fileId: "",
     },
-    lessons: [
+    chapters: [
       {
-        lesson_name: "",
-        content: "",
+        title: "",
+        summary: "",
+        lessons: [
+          {
+            lesson_name: "",
+            content: "",
+            resources: [{ title: "", url: "", fileId: "" }],
+          },
+        ],
       },
     ],
   };

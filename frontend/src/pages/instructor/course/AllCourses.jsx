@@ -32,7 +32,7 @@ function AllCourses() {
       <CourseTable
         isEdit={true}
         data={data?.courses}
-        header={["Title", "Instructor", "Category", "Published", "Action"]}
+        header={["Title",  "Category", "Status","Resources", "Action"]}
         // handleDelete={handleDelete}
       />
     </div>

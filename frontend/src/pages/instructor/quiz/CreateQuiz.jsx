@@ -4,7 +4,7 @@ import { useCreateQuizMutation } from "../../../redux/features/api/quiz/quizApi"
 
 import Loader from "../../../components/loader/Loader";
 import { toast } from "react-hot-toast";
-import { Upload } from "lucide-react";
+// import { Upload } from "lucide-react";
 import { useGetInstructorCoursesQuery } from "../../../redux/features/api/course/courseApi";
 
 function CreateQuiz() {
